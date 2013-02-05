@@ -117,6 +117,7 @@ using System.Collections.Generic;
     {
         [DataMember(Name = "city", IsRequired = false), XmlElement("city"), JsonProperty("city")]
         public MapCity City { get; set; }
+        public bool ShouldSerializeCity() { return City != null; }
 
         [DataMember(Name = "size", IsRequired = false), XmlElement("size"), JsonProperty("size")]
         public int? Size { get; set; }
@@ -131,12 +132,12 @@ using System.Collections.Generic;
         public bool ShouldSerializeCssClass() { return !string.IsNullOrEmpty(CssClass); }
 
         [DataMember(Name = "latitude", IsRequired = false), XmlElement("latitude"), JsonProperty("latitude")]
-        public float? Latitude { get; set; }
-        public bool ShouldSerializeLatitude() { return Latitude.HasValue; }
+        public string Latitude { get; set; }
+        public bool ShouldSerializeLatitude() { return !string.IsNullOrWhiteSpace(Latitude); }
 
         [DataMember(Name = "longitude", IsRequired = false), XmlElement("longitude"), JsonProperty("longitude")]
-        public float? Longitude { get; set; }
-        public bool ShouldSerializeLongitude() { return Longitude.HasValue; }
+        public string Longitude { get; set; }
+        public bool ShouldSerializeLongitude() { return !string.IsNullOrWhiteSpace(Longitude); }
 
         [DataMember(Name = "host", IsRequired = false), XmlElement("host"), JsonProperty("host")]
         public string Host { get; set; }
