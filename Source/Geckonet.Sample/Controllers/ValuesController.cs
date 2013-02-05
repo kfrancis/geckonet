@@ -15,11 +15,12 @@ namespace Geckonet.Sample.Controllers
 
         [HttpGet]
         [ActionName("numberandsecondarystat")]
-        public HttpResponseMessage NumberAndSecondaryStat()
+        public HttpResponseMessage NumberAndSecondaryStat([FromUri]string format = "JSON", [FromUri]string type = "1")
         {
             try
             {
                 if (!User.Identity.IsAuthenticated) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception("User not authorized.")); }
+                if (int.Parse(type) != 1) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("type '{0}' is wrong.", type))); }
 
                 var retVal = new NumberAndSecondaryStat();
                 var items = new List<DataItem>() { 
@@ -38,11 +39,12 @@ namespace Geckonet.Sample.Controllers
 
         [HttpGet]
         [ActionName("ragnumbersonly")]
-        public HttpResponseMessage RAGNumbersOnly()
+        public HttpResponseMessage RAGNumbersOnly([FromUri]string format = "JSON", [FromUri]string type = "3")
         {
             try
             {
                 if (!User.Identity.IsAuthenticated) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception("User not authorized.")); }
+                if (int.Parse(type) != 3) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("type '{0}' is wrong.", type))); }
 
                 var retVal = new RAGNumbersOnly();
                 var items = new List<DataItem>() { 

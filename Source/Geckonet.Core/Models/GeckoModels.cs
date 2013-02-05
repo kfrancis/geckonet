@@ -30,6 +30,7 @@
 namespace Geckonet.Core.Models
 {
     #region Imports
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -65,14 +66,15 @@ namespace Geckonet.Core.Models
         /// <summary>
         /// Optional. Setting this to 'true' will show the numerical difference not the percent difference.
         /// </summary>
-        [DataMember(Name = "absolute", IsRequired = false), XmlElement("absolute")]
+        [DataMember(Name = "absolute", IsRequired = false), XmlElement("absolute"), JsonProperty("absolute")]
         public bool? Absolute { get; set; }
         public bool ShouldSerializeAbsolute() { return Absolute.HasValue; }
 
-        [DataMember(Name = "type", IsRequired = false), XmlElement("type")]
+        [DataMember(Name = "type", IsRequired = false), XmlElement("type"), JsonProperty("type")]
         public string Type { get; set; }
+        public bool ShouldSerializeType() { return !string.IsNullOrEmpty(Type); }
 
-        [XmlElement("item")]
+        [XmlElement("item"), JsonProperty("item")]
         public DataItem[] DataItems { get; set; }
     }
 
@@ -82,13 +84,13 @@ namespace Geckonet.Core.Models
         /// <summary>
         /// The label of this data point
         /// </summary>
-        [Required, DataMember(Name = "text", IsRequired = true), XmlElement("text")]
+        [Required, DataMember(Name = "text", IsRequired = true), XmlElement("text"), JsonProperty("text", Required = Required.AllowNull)]
         public string text { get; set; }
 
         /// <summary>
         /// The value of this data point
         /// </summary>
-        [Required, DataMember(Name = "value", IsRequired = true), XmlElement("value")]
+        [Required, DataMember(Name = "value", IsRequired = true), XmlElement("value"), JsonProperty("value", Required = Required.Always)]
         public decimal @value { get; set; }
     }
 }
