@@ -14,7 +14,7 @@ To see how the endpoints from the asp.net web api project work, do the following
 
 	**Method:** Polling  
 	**URL data feed:** http://geckonet.azurewebsites.net/api/Values/<method name here>  
-	**API key:** Any valid guid, since the site uses guid-based authorization  
+	**API key:** A valid guid, since the site uses guid-based authorization. Should be 27c4168c-5b25-44ac-824a-e77a2984522c  
 	**Widget type:** Custom  
 	**Feed Format:** JSON  
 	**Request Type:** GET  
