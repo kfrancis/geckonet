@@ -84,7 +84,7 @@ namespace Geckonet.Sample.Controllers
                     },
                     Colors = new List<string>() { "#058DC7", "#50B432", "#EF561A" },
                     Credits = new HighchartCredits() { Enabled = false },
-                    Title = new HighchartTitle() { Text = null },
+                    Title = new HighchartTitle() { Text = "test" },
                     //Tooltip = new HighchartTooltip() { Formatter = System.Web.HttpUtility.JavaScriptStringEncode("") }
                     Legend = new HighchartLegend()
                     {
@@ -105,14 +105,16 @@ namespace Geckonet.Sample.Controllers
                             Size = "100%"
                         }
                     },
-                    Series = new HighchartSeries()
+                    Series = new List<HighchartSeries>()
                     {
-                        Type = "pie",
-                        Name = "New vs Returning",
-                        Data = new Dictionary<string, int>()
-                        {
-                            {"Free",13491},
-                            {"Premium",191}
+                        new HighchartSeries(){ 
+                            Type = "pie",
+                            Name = "New vs Returning",
+                            Data = new Dictionary<string, int>()
+                            {
+                                {"Free",13491},
+                                {"Premium",191}
+                            }
                         }
                     }
 

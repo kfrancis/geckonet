@@ -214,11 +214,11 @@ using Newtonsoft.Json.Converters;
         public bool ShouldSerializePlotOptions() { return PlotOptions != null; }
 
         [DataMember(Name = "series", IsRequired = false), XmlElement("series"), JsonProperty("series")]
-        public HighchartSeries Series { get; set; }
+        public List<HighchartSeries> Series { get; set; }
         public bool ShouldSerializeSeries() { return Series != null; }
     }
 
-    [DataContract(Name = "series", Namespace = ""), XmlType("series", Namespace = "")]
+    [DataContract(Name = "series", Namespace = ""), XmlType("series", Namespace = ""), JsonObject("series")]
     public class HighchartSeries
     {
         [DataMember(Name = "type", IsRequired = false), XmlElement("type"), JsonProperty("type")]
