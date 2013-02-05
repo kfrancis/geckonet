@@ -31,8 +31,8 @@ namespace Geckonet.Sample.Controllers
                 // You would modify what gets returned here to make it meaningful 
                 var retVal = new NumberAndSecondaryStat();
                 var items = new List<DataItem>() { 
-                    new DataItem(){ text = "test1", value = rand.Next(100) },
-                    new DataItem(){ text = "test2", value = rand.Next(100) }
+                    new DataItem(){ Text = "test1", Value = rand.Next(100) },
+                    new DataItem(){ Text = "test2", Value = rand.Next(100) }
                 };
                 retVal.DataItems = items.ToArray();
 
@@ -60,15 +60,15 @@ namespace Geckonet.Sample.Controllers
                 //if (int.Parse(type) != 3) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("type '{0}' is wrong.", type))); }
 
                 // You would modify what gets returned here to make it meaningful 
-                var retVal = new RAGNumbersOnly();
+                var retVal = new GeckoItems();
                 var items = new List<DataItem>() { 
-                    new DataItem(){ text = "test1", value = rand.Next(100) },
-                    new DataItem(){ text = "test2", value = rand.Next(100) },
-                    new DataItem(){ text = "test3", value = rand.Next(100) }
+                    new DataItem(){ Text = "test1", Value = rand.Next(100) },
+                    new DataItem(){ Text = "test2", Value = rand.Next(100) },
+                    new DataItem(){ Text = "test3", Value = rand.Next(100) }
                 };
                 retVal.DataItems = items.ToArray();
 
-                return this.Request.CreateResponse<RAGNumbersOnly>(HttpStatusCode.OK, retVal);
+                return this.Request.CreateResponse<GeckoItems>(HttpStatusCode.OK, retVal);
             }
             catch (Exception ex)
             {
@@ -92,15 +92,47 @@ namespace Geckonet.Sample.Controllers
                 if (int.Parse(type) != 2) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("Type parameter '{0}' is wrong.", type))); }
 
                 // You would modify what gets returned here to make it meaningful 
-                var retVal = new RAGNumbersOnly();
+                var retVal = new GeckoItems();
                 var items = new List<DataItem>() { 
-                    new DataItem(){ text = "test1", value = rand.Next(100), prefix = "$" },
-                    new DataItem(){ text = "test2", value = rand.Next(100), prefix = "$" },
-                    new DataItem(){ text = "test3", value = rand.Next(100), prefix = "$" }
+                    new DataItem(){ Text = "test1", Value = rand.Next(100), Prefix = "$" },
+                    new DataItem(){ Text = "test2", Value = rand.Next(100), Prefix = "$" },
+                    new DataItem(){ Text = "test3", Value = rand.Next(100), Prefix = "$" }
                 };
                 retVal.DataItems = items.ToArray();
 
-                return this.Request.CreateResponse<RAGNumbersOnly>(HttpStatusCode.OK, retVal);
+                return this.Request.CreateResponse<GeckoItems>(HttpStatusCode.OK, retVal);
+            }
+            catch (Exception ex)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        /// <summary>
+        /// Endpoint for the text custom widget
+        /// </summary>
+        /// <param name="format">The format for the return, since not configurable, is just set by default.</param>
+        /// <param name="type">The type of widget as defined on their documentation</param>
+        /// <returns>A response, containing random information if authorized.</returns>
+        [HttpGet]
+        [ActionName("text")]
+        public HttpResponseMessage Text([FromUri]string format = "JSON", [FromUri]string type = "4")
+        {
+            try
+            {
+                if (!User.Identity.IsAuthenticated) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception("User not authorized.")); }
+                if (int.Parse(type) != 4) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("Type parameter '{0}' is wrong.", type))); }
+
+                // You would modify what gets returned here to make it meaningful 
+                var retVal = new GeckoItems();
+                var items = new List<DataItem>() { 
+                    new DataItem(){ Text = NLipsum.Core.LipsumGenerator.Generate(rand.Next(1, 2)), Type = DataItemType.None },
+                    new DataItem(){ Text = NLipsum.Core.LipsumGenerator.Generate(rand.Next(1, 2)), Type = DataItemType.Info },
+                    new DataItem(){ Text = NLipsum.Core.LipsumGenerator.Generate(rand.Next(1, 2)), Type = DataItemType.Alert }
+                };
+                retVal.DataItems = items.ToArray();
+
+                return this.Request.CreateResponse<GeckoItems>(HttpStatusCode.OK, retVal);
             }
             catch (Exception ex)
             {

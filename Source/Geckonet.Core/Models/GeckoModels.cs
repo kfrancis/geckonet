@@ -47,7 +47,7 @@ namespace Geckonet.Core.Models
     /// See <a href="http://docs.geckoboard.com/custom-widgets/rag.html">documentation</a>.
     /// </summary>
     [DataContract(Name = "root", Namespace = ""), XmlRoot("root", Namespace = "")]
-    public class RAGNumbersOnly
+    public class GeckoItems
     {
         [XmlElement("item"), JsonProperty("item")]
         [MaxLength(3)]
@@ -83,16 +83,30 @@ namespace Geckonet.Core.Models
         /// The label of this data point
         /// </summary>
         [Required, DataMember(Name = "text", IsRequired = true), XmlElement("text"), JsonProperty("text", Required = Required.AllowNull)]
-        public string text { get; set; }
+        public string Text { get; set; }
+        public bool ShouldSerializeText() { return !string.IsNullOrEmpty(Text); }
 
         /// <summary>
         /// The value of this data point
         /// </summary>
-        [Required, DataMember(Name = "value", IsRequired = true), XmlElement("value"), JsonProperty("value", Required = Required.Always)]
+        [DataMember(Name = "value", IsRequired = false), XmlElement("value"), JsonProperty("value")]
         [StringLength(40)]
-        public decimal @value { get; set; }
+        public decimal? Value { get; set; }
+        public bool ShouldSerializeValue() { return Value.HasValue; }
+
+        [DataMember(Name = "type", IsRequired = false), XmlElement("type"), JsonProperty("type")]
+        public DataItemType? Type { get; set; }
+        public bool ShouldSerializeType() { return Type.HasValue; }
 
         [DataMember(Name = "prefix", IsRequired = false), XmlElement("prefix"), JsonProperty("prefix")]
-        public string prefix { get; set; }
+        public string Prefix { get; set; }
+        public bool ShouldSerializePrefix() { return !string.IsNullOrEmpty(Prefix); }
+    }
+
+    public enum DataItemType
+    {
+        None = 0,   // (no corner icon)
+        Alert,      // (yellow corner icon)
+        Info        // (grey corner icon)
     }
 }

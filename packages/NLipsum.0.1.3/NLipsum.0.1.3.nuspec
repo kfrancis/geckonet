@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>NLipsum</id>
+    <version>0.1.3</version>
+    <title />
+    <authors>alex.c.pendleton</authors>
+    <owners>alex.c.pendleton</owners>
+    <licenseUrl>http://opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>http://code.google.com/p/nlipsum/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>NLipsum : Lorem Ipsum (Lipsum) Generator and Library for the .NET Framework (C#)</description>
+    <references>
+      <reference file="NLipsum.Core.dll" />
+    </references>
+  </metadata>
+</package>
