@@ -51,7 +51,7 @@ namespace Geckonet.Core.Models
     [DataContract(Name = "root", Namespace = ""), XmlRoot("root", Namespace = "")]
     public class RAGNumbersOnly
     {
-        [XmlElement("item")]
+        [XmlElement("item"), JsonProperty("item")]
         [MaxLength(3)]
         public DataItem[] DataItems { get; set; }
     }
