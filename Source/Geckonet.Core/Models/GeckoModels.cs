@@ -38,9 +38,12 @@ namespace Geckonet.Core.Models
     using Newtonsoft.Json;
 using System.Collections.Generic;
     using System.Net;
+    using System.ComponentModel;
+using Newtonsoft.Json.Converters;
     
     #endregion
 
+    #region Custom Widgets
     /// <summary>
     /// Response consists of 3 values each with an associated description. The first value will be coloured red, 
     /// the second will be amber value and the third, green. If the value = 0 or is blank, the corresponding 
@@ -105,6 +108,15 @@ using System.Collections.Generic;
         public bool ShouldSerializePrefix() { return !string.IsNullOrEmpty(Prefix); }
     }
 
+    public enum DataItemType
+    {
+        None = 0,   // (no corner icon)
+        Alert,      // (yellow corner icon)
+        Info        // (grey corner icon)
+    }
+    #endregion
+
+    #region Mapping
     [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
     public class GeckoMapPoints
     {
@@ -120,6 +132,7 @@ using System.Collections.Generic;
         public bool ShouldSerializeCity() { return City != null; }
 
         [DataMember(Name = "size", IsRequired = false), XmlElement("size"), JsonProperty("size")]
+        [Range(1, 10)]
         public int? Size { get; set; }
         public bool ShouldSerializeSize() { return Size.HasValue; }
 
@@ -165,11 +178,188 @@ using System.Collections.Generic;
         public string RegionCode { get ;set; }
         public bool ShouldSerializeRegionCode() { return !string.IsNullOrEmpty(RegionCode); }
     }
+#endregion
 
-    public enum DataItemType
+#region Highchart
+
+    [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
+    public class GeckoHighchart
     {
-        None = 0,   // (no corner icon)
-        Alert,      // (yellow corner icon)
-        Info        // (grey corner icon)
+        [DataMember(Name = "chart", IsRequired = false), XmlElement("chart"), JsonProperty("chart")]
+        public HighchartChart Chart { get; set; }
+        public bool ShouldSerializeChart() { return Chart != null; }
+
+        [DataMember(Name = "colors", IsRequired = false), XmlArray("colors"), JsonProperty("colors")]
+        public List<string> Colors { get; set; }
+        public bool ShouldSerializeColors() { return (Colors != null && Colors.Count > 0); }
+
+        [DataMember(Name = "credits", IsRequired = false), XmlElement("credits"), JsonProperty("credits")]
+        public HighchartCredits Credits { get; set; }
+        public bool ShouldSerializeCredits() { return Credits != null; }
+
+        [DataMember(Name = "title", IsRequired = false), XmlElement("title"), JsonProperty("title")]
+        public HighchartTitle Title { get; set; }
+        public bool ShouldSerializeTitle() { return Title != null; }
+
+        [DataMember(Name = "tooltip", IsRequired = false), XmlElement("tooltip"), JsonProperty("tooltip")]
+        public HighchartTooltip Tooltip { get; set; }
+        public bool ShouldSerializeTooltip() { return Tooltip != null; }
+
+        [DataMember(Name = "legend", IsRequired = false), XmlElement("legend"), JsonProperty("legend")]
+        public HighchartLegend Legend { get; set; }
+        public bool ShouldSerializeLegend() { return Legend != null; }
+
+        [DataMember(Name = "plotOptions", IsRequired = false), XmlElement("plotOptions"), JsonProperty("plotOptions")]
+        public HighchartPlotOptions PlotOptions { get; set; }
+        public bool ShouldSerializePlotOptions() { return PlotOptions != null; }
+
+        [DataMember(Name = "series", IsRequired = false), XmlElement("series"), JsonProperty("series")]
+        public HighchartSeries Series { get; set; }
+        public bool ShouldSerializeSeries() { return Series != null; }
     }
+
+    [DataContract(Name = "series", Namespace = ""), XmlType("series", Namespace = "")]
+    public class HighchartSeries
+    {
+        [DataMember(Name = "type", IsRequired = false), XmlElement("type"), JsonProperty("type")]
+        public string Type { get; set; }
+        public bool ShouldSerializeType() { return !string.IsNullOrWhiteSpace(Type); }
+
+        [DataMember(Name = "name", IsRequired = false), XmlElement("name"), JsonProperty("name")]
+        public string Name { get; set; }
+        public bool ShouldSerializeName() { return !string.IsNullOrWhiteSpace(Name); }
+
+        [DataMember(Name = "data", IsRequired = false), XmlElement("data"), JsonProperty("data")]
+        public Dictionary<string, int> Data { get; set; }
+        public bool ShouldSerializeData() { return (Data != null) && (Data.Count > 0); }
+    }
+
+    [DataContract(Name = "plotOptions", Namespace = ""), XmlType("plotOptions", Namespace = "")]
+    public class HighchartPlotOptions
+    {
+        public HighchartPieOptions PieOptions { get; set; }
+    }
+
+    [DataContract(Name = "pie", Namespace = ""), XmlType("pie", Namespace = "")]
+    public class HighchartPieOptions
+    {
+        [DataMember(Name = "animation", IsRequired = false), XmlElement("animation"), JsonProperty("animation")]
+        public bool? Animation { get; set; }
+        public bool ShouldSerializeAnimation() { return Animation.HasValue; }
+
+        [DataMember(Name = "allowPointSelect", IsRequired = false), XmlElement("allowPointSelect"), JsonProperty("allowPointSelect")]
+        public bool? AllowPointSelect { get; set; }
+        public bool ShouldSerializeAllowPointSelect() { return AllowPointSelect.HasValue; }
+
+        [DataMember(Name = "cursor", IsRequired = false), XmlElement("cursor"), JsonProperty("cursor")]
+        public string Cursor { get; set; }
+        public bool ShouldSerializeCursor() { return !string.IsNullOrWhiteSpace(Cursor); }
+
+        [DataMember(Name = "dataLabels", IsRequired = false), XmlElement("dataLabels"), JsonProperty("dataLabels")]
+        public HighchartDataLabelOptions DataLabelOptions { get; set; }
+        public bool ShouldSerializeDataLabelOptions() { return DataLabelOptions != null; }
+
+        [DataMember(Name = "showInLegend", IsRequired = false), XmlElement("showInLegend"), JsonProperty("showInLegend")]
+        public bool? ShowInLegend { get; set; }
+        public bool ShouldSerializeShowInLegend() { return ShowInLegend.HasValue; }
+
+        [DataMember(Name = "size", IsRequired = false), XmlElement("size"), JsonProperty("size")]
+        public string Size { get; set; }
+        public bool ShouldSerializeSize() { return !string.IsNullOrWhiteSpace(Size); }
+    }
+
+    [DataContract(Name = "dataLabels", Namespace = ""), XmlType("dataLabels", Namespace = "")]
+    public class HighchartDataLabelOptions
+    {
+        [DataMember(Name = "enabled", IsRequired = false), XmlElement("enabled"), JsonProperty("enabled")]
+        public bool? Enabled { get; set; }
+        public bool ShouldSerializeEnabled() { return Enabled.HasValue; }
+    }
+
+    [DataContract(Name = "legend", Namespace = ""), XmlType("legend", Namespace = "")]
+    public class HighchartLegend
+    {
+        [DataMember(Name = "borderColor", IsRequired = false), XmlElement("borderColor"), JsonProperty("borderColor")]
+        public string BorderColor { get; set; }
+        public bool ShouldSerializeBorderColor() { return !string.IsNullOrWhiteSpace(BorderColor); }
+
+        [DataMember(Name = "itemWidth", IsRequired = false), XmlElement("itemWidth"), JsonProperty("itemWidth")]
+        public int? ItemWidth { get; set; }
+        public bool ShouldSerializeItemWidth() { return ItemWidth.HasValue; }
+
+        [DataMember(Name = "margin", IsRequired = false), XmlElement("margin"), JsonProperty("margin")]
+        public int? Margin { get; set; }
+        public bool ShouldSerializeMargin() { return Margin.HasValue; }
+
+        [DataMember(Name = "width", IsRequired = false), XmlElement("width"), JsonProperty("width")]
+        public int? Width { get; set; }
+        public bool ShouldSerializeWidth() { return Width.HasValue; }
+    }
+
+    [DataContract(Name = "tooltip", Namespace = ""), XmlType("tooltip", Namespace = "")]
+    public class HighchartTooltip
+    {
+        [DataMember(Name = "formatter", IsRequired = false), XmlElement("formatter"), JsonProperty("formatter")]
+        public string Formatter { get; set; }
+        public bool ShouldSerializeFormatter() { return !string.IsNullOrWhiteSpace(Formatter); }
+    }
+
+    [DataContract(Name = "title", Namespace = ""), XmlType("title", Namespace = "")]
+    public class HighchartTitle
+    {
+        [DataMember(Name = "text", IsRequired = false), XmlElement("text"), JsonProperty("text", Required = Required.AllowNull)]
+        public string Text { get; set; }
+        public bool ShouldSerializeText() { return !string.IsNullOrWhiteSpace(Text); }
+    }
+
+    [DataContract(Name = "credits", Namespace = ""), XmlType("credits", Namespace = "")]
+    public class HighchartCredits
+    {
+        [DataMember(Name = "enabled", IsRequired = false), XmlElement("enabled"), JsonProperty("enabled")]
+        public bool? Enabled { get; set; }
+        public bool ShouldSerializeEnabled() { return Enabled.HasValue; }
+    }
+
+    [DataContract(Name = "chart", Namespace = ""), XmlType("chart", Namespace = "")]
+    public class HighchartChart
+    {
+        [DataMember(Name = "renderTo", IsRequired = false), XmlElement("renderTo"), JsonProperty("renderTo"), DefaultValue("container")]
+        public string RenderTo { get; set; }
+        public bool ShouldSerializeRenderTo() { return !string.IsNullOrWhiteSpace(RenderTo); }
+
+        [DataMember(Name = "plotBackgroundColor", IsRequired = false), XmlElement("plotBackgroundColor"), JsonProperty("plotBackgroundColor")]
+        public string PlotBackgroundColor { get; set; }
+        public bool ShouldSerializePlotBackgroundColor() { return !string.IsNullOrWhiteSpace(PlotBackgroundColor); }
+
+        [DataMember(Name = "backgroundColor", IsRequired = false), XmlElement("backgroundColor"), JsonProperty("backgroundColor")]
+        public string BackgroundColor { get; set; }
+        public bool ShouldSerializeBackgroundColor() { return !string.IsNullOrWhiteSpace(BackgroundColor); }
+
+        [DataMember(Name = "borderColor", IsRequired = false), XmlElement("borderColor"), JsonProperty("borderColor")]
+        public string BorderColor { get; set; }
+        public bool ShouldSerializeBorderColor() { return !string.IsNullOrWhiteSpace(BorderColor); }
+
+        [DataMember(Name = "lineColor", IsRequired = false), XmlElement("lineColor"), JsonProperty("lineColor")]
+        public string LineColor { get; set; }
+        public bool ShouldSerializeLineColor() { return !string.IsNullOrWhiteSpace(LineColor); }
+
+        [DataMember(Name = "plotBorderColor", IsRequired = false), XmlElement("plotBorderColor"), JsonProperty("plotBorderColor")]
+        public string PlotBorderColor { get; set; }
+        public bool ShouldSerializePlotBorderColor() { return !string.IsNullOrWhiteSpace(PlotBorderColor); }
+
+        [DataMember(Name = "plotBorderWidth", IsRequired = false), XmlElement("plotBorderWidth"), JsonProperty("plotBorderWidth")]
+        public int? PlotBorderWidth { get; set; }
+        public bool ShouldSerializePlotBorderWidth() { return PlotBorderWidth.HasValue; }
+
+        [DataMember(Name = "height", IsRequired = false), XmlElement("height"), JsonProperty("height")]
+        public int? Height { get; set; }
+        public bool ShouldSerializeHeight() { return Height.HasValue; }
+
+        [DataMember(Name = "plotShadow", IsRequired = false), XmlElement("plotShadow"), JsonProperty("plotShadow")]
+        public bool? PlotShadow { get; set; }
+        public bool ShouldSerializeSeries() { return PlotShadow.HasValue; }
+    }
+
+#endregion
+    
 }

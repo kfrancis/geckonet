@@ -1,4 +1,5 @@
 ﻿using Geckonet.Core.Authorization;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace Geckonet.Sample
             xml.UseXmlSerializer = true;
 
             var json = config.Formatters.JsonFormatter;
+            //json.SerializerSettings.Converters.Add(new KeyValuePairConverter());
             json.Indent = true;
 
             GlobalConfiguration.Configuration.MessageHandlers.Add(new BasicAuthMessageHandler() { PrincipalProvider = new GuidAPIKeyPrincipalProvider() });
