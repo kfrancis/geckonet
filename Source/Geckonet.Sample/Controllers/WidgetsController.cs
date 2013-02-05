@@ -9,8 +9,11 @@ using System.Web.Http;
 
 namespace Geckonet.Sample.Controllers
 {
+    /// <summary>
+    /// Sample endpoints for Geckoboard Custom Widgets
+    /// </summary>
     [Authorize]
-    public class ValuesController : ApiController
+    public class WidgetsController : ApiController
     {
         private Random rand = new Random();
 

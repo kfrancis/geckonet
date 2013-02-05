@@ -36,6 +36,8 @@ namespace Geckonet.Core.Models
     using System.Runtime.Serialization;
     using System.Xml.Serialization;
     using Newtonsoft.Json;
+using System.Collections.Generic;
+    using System.Net;
     
     #endregion
 
@@ -101,6 +103,65 @@ namespace Geckonet.Core.Models
         [DataMember(Name = "prefix", IsRequired = false), XmlElement("prefix"), JsonProperty("prefix")]
         public string Prefix { get; set; }
         public bool ShouldSerializePrefix() { return !string.IsNullOrEmpty(Prefix); }
+    }
+
+    [DataContract(Namespace = ""), XmlRoot("points", Namespace = ""), JsonArray("points")]
+    public class GeckoMapPoints : List<MapPoint>
+    {
+
+    }
+
+    [DataContract(Name = "point", Namespace = ""), XmlType("point", Namespace = "")]
+    public class MapPoint 
+    {
+        [DataMember(Name = "city", IsRequired = false), XmlElement("city"), JsonProperty("city")]
+        public MapCity City { get; set; }
+
+        [DataMember(Name = "size", IsRequired = false), XmlElement("size"), JsonProperty("size")]
+        public int? Size { get; set; }
+        public bool ShouldSerializeSize() { return Size.HasValue; }
+
+        [DataMember(Name = "color", IsRequired = false), XmlElement("color"), JsonProperty("color")]
+        public string Color { get; set; }
+        public bool ShouldSerializeColor() { return !string.IsNullOrEmpty(Color); }
+
+        [DataMember(Name = "cssclass", IsRequired = false), XmlElement("cssclass"), JsonProperty("cssclass")]
+        public string CssClass { get; set; }
+        public bool ShouldSerializeCssClass() { return !string.IsNullOrEmpty(CssClass); }
+
+        [DataMember(Name = "latitude", IsRequired = false), XmlElement("latitude"), JsonProperty("latitude")]
+        public float? Latitude { get; set; }
+        public bool ShouldSerializeLatitude() { return Latitude.HasValue; }
+
+        [DataMember(Name = "longitude", IsRequired = false), XmlElement("longitude"), JsonProperty("longitude")]
+        public float? Longitude { get; set; }
+        public bool ShouldSerializeLongitude() { return Longitude.HasValue; }
+
+        [DataMember(Name = "host", IsRequired = false), XmlElement("host"), JsonProperty("host")]
+        public string Host { get; set; }
+        public bool ShouldSerializeHost() { return !string.IsNullOrEmpty(Host); }
+
+        [DataMember(Name = "ip", IsRequired = false), XmlElement("ip"), JsonProperty("ip")]
+        public string IP { get; set; }
+        public bool ShouldSerializeIP() { return !string.IsNullOrWhiteSpace(IP); }
+    }
+
+    [DataContract(Name = "city", Namespace = ""), XmlType("city", Namespace = "")]
+    public class MapCity
+    {
+        [DataMember(Name = "city_name", IsRequired = false), XmlElement("city_name"), JsonProperty("city_name")]
+        public string CityName { get; set; }
+        public bool ShouldSerializeCityName() { return !string.IsNullOrEmpty(CityName); }
+
+        [DataMember(Name = "country_code", IsRequired = false), XmlElement("country_code"), JsonProperty("country_code")]
+        [StringLength(2)]
+        public string CountryCode { get; set; }
+        public bool ShouldSerializeCountryCode() { return !string.IsNullOrEmpty(CountryCode); }
+
+        [DataMember(Name = "region_code", IsRequired = false), XmlElement("region_code"), JsonProperty("region_code")]
+        [StringLength(2)]
+        public string RegionCode { get ;set; }
+        public bool ShouldSerializeRegionCode() { return !string.IsNullOrEmpty(RegionCode); }
     }
 
     public enum DataItemType
