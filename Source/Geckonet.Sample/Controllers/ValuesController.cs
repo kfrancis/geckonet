@@ -26,7 +26,7 @@ namespace Geckonet.Sample.Controllers
             try
             {
                 if (!User.Identity.IsAuthenticated) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception("User not authorized.")); }
-                if (int.Parse(type) != 1) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("Type parameter '{0}' is wrong.", type))); }
+                //if (int.Parse(type) != 1) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("Type parameter '{0}' is wrong.", type))); }
 
                 // You would modify what gets returned here to make it meaningful 
                 var retVal = new NumberAndSecondaryStat();
@@ -89,7 +89,7 @@ namespace Geckonet.Sample.Controllers
             try
             {
                 if (!User.Identity.IsAuthenticated) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception("User not authorized.")); }
-                if (int.Parse(type) != 2) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("Type parameter '{0}' is wrong.", type))); }
+                //if (int.Parse(type) != 2) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("Type parameter '{0}' is wrong.", type))); }
 
                 // You would modify what gets returned here to make it meaningful 
                 var retVal = new GeckoItems();
@@ -121,7 +121,7 @@ namespace Geckonet.Sample.Controllers
             try
             {
                 if (!User.Identity.IsAuthenticated) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception("User not authorized.")); }
-                if (int.Parse(type) != 4) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("Type parameter '{0}' is wrong.", type))); }
+                //if (int.Parse(type) != 4) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("Type parameter '{0}' is wrong.", type))); }
 
                 // You would modify what gets returned here to make it meaningful 
                 var retVal = new GeckoItems();
