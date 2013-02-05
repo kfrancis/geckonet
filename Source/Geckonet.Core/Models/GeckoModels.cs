@@ -230,7 +230,7 @@ using Newtonsoft.Json.Converters;
         public bool ShouldSerializeName() { return !string.IsNullOrWhiteSpace(Name); }
 
         [DataMember(Name = "data", IsRequired = false), XmlElement("data"), JsonProperty("data")]
-        public Dictionary<string, int> Data { get; set; }
+        public List<Dictionary<string, int>> Data { get; set; }
         public bool ShouldSerializeData() { return (Data != null) && (Data.Count > 0); }
     }
 

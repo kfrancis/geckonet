@@ -110,10 +110,10 @@ namespace Geckonet.Sample.Controllers
                         new HighchartSeries(){ 
                             Type = "pie",
                             Name = "New vs Returning",
-                            Data = new Dictionary<string, int>()
+                            Data = new List<Dictionary<string, int>>()
                             {
-                                {"Free",13491},
-                                {"Premium",191}
+                                new Dictionary<string, int>(){{"Free",13491}},
+                                new Dictionary<string, int>(){{"Premium",191}}
                             }
                         }
                     }
