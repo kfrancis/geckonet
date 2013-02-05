@@ -60,6 +60,42 @@ namespace Geckonet.Sample.Controllers
         /// <param name="type">The type of widget as defined on their documentation</param>
         /// <returns>A response, containing random information if authorized.</returns>
         [HttpGet]
+        [ActionName("line")]
+        public HttpResponseMessage Line([FromUri]string format = "JSON", [FromUri]string type = "1")
+        {
+            try
+            {
+                if (!User.Identity.IsAuthenticated) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception("API key not specified.")); }
+                if (Guid.Parse(ConfigurationManager.AppSettings["GeckoAPIkey"]).ToString() != User.Identity.Name) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception(string.Format("Unknown API key, should be '{0}'.", ConfigurationManager.AppSettings["GeckoAPIkey"]))); }
+                //if (int.Parse(type) != 1) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("Type parameter '{0}' is wrong.", type))); }
+
+                // You would modify what gets returned here to make it meaningful 
+                var retVal = new GeckoLineChart()
+                {
+                    Items = new List<string>() { "12.3", "2.3", "10", "15", "15", "13", "12.1", "9.8", "12.3", "2.3", "10" },
+                    Settings = new GeckoLineChartSettings()
+                    {
+                        XAxisLabels = new List<string>() { "Jun", "Jul", "Aug" },
+                        YAxisLabels = new List<string>() { "Min", "Max" },
+                        Colour = "ff9900"
+                    }
+                };
+
+                return this.Request.CreateResponse<GeckoLineChart>(HttpStatusCode.OK, retVal);
+            }
+            catch (Exception ex)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        /// <summary>
+        /// Endpoint for the number and secondary stat custom widget
+        /// </summary>
+        /// <param name="format">The format for the return, since not configurable, is just set by default.</param>
+        /// <param name="type">The type of widget as defined on their documentation</param>
+        /// <returns>A response, containing random information if authorized.</returns>
+        [HttpGet]
         [ActionName("highchart")]
         public HttpResponseMessage Highchart([FromUri]string format = "JSON", [FromUri]string type = "1")
         {

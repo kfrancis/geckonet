@@ -180,7 +180,7 @@ using Newtonsoft.Json.Converters;
     }
 #endregion
 
-#region Highchart
+    #region Highchart
 
     [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
     public class GeckoHighchart
@@ -362,4 +362,38 @@ using Newtonsoft.Json.Converters;
 
 #endregion
     
+#region Pie Chart
+#endregion
+
+    #region Line Chart
+    [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
+    public class GeckoLineChart
+    {
+        [DataMember(Name = "item", IsRequired = false), XmlElement("items"), JsonProperty("items")]
+        public List<string> Items { get; set; }
+        public bool ShouldSerializeItems() { return (Items != null) && (Items.Count > 0); }
+
+        [DataMember(Name = "settings", IsRequired = false), XmlElement("settings"), JsonProperty("settings")]
+        public GeckoLineChartSettings Settings { get; set; }
+        public bool ShouldSerializeGeckoLineChartSettings() { return (Settings != null); }
+    }
+
+    [DataContract(Name = "settings", Namespace = ""), XmlType("settings", Namespace = "")]
+    public class GeckoLineChartSettings
+    {
+        [DataMember(Name = "axisx", IsRequired = false), XmlElement("axisx"), JsonProperty("axisx")]
+        public List<string> XAxisLabels { get; set; }
+        public bool ShouldSerializeXAxisLabels() { return (XAxisLabels != null) && (XAxisLabels.Count > 0); }
+
+        [DataMember(Name = "axisy", IsRequired = false), XmlElement("axisy"), JsonProperty("axisy")]
+        public List<string> YAxisLabels { get; set; }
+        public bool ShouldSerializeYAxisLabels() { return (YAxisLabels != null) && (YAxisLabels.Count > 0); }
+
+        [DataMember(Name = "colour", IsRequired = false), XmlElement("colour"), JsonProperty("colour")]
+        public string Colour { get; set; }
+        public bool ShouldSerializeColour() { return !string.IsNullOrWhiteSpace(Colour); }
+    }
+    
+    #endregion
+
 }
