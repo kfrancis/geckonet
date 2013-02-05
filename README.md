@@ -11,13 +11,15 @@ To see how the endpoints from the asp.net web api project work, do the following
 2. Select the category "Custom Widgets"
 3. Select a widget, like "RAG Numbers"
 4. Enter the following information:
-* Method: Polling
-* URL data feed: http://geckonet.azurewebsites.net/api/Values/<method name here>
-* API key: Any valid guid, since the site uses guid-based authorization
-* Widget type: Custom
-* Feed Format: JSON
-* Request Type: GET
-* Reload Time: 15 Minutes
+
+	**Method:** Polling  
+	**URL data feed:** http://geckonet.azurewebsites.net/api/Values/<method name here>  
+	**API key:** Any valid guid, since the site uses guid-based authorization  
+	**Widget type:** Custom  
+	**Feed Format:** JSON  
+	**Request Type:** GET  
+	**Reload Time:** 15 Minutes  
+
 5. To finish, click "Add to Dashboard".
 
 The widget should then appear on your dashboard with random data everytime it's refreshed.
