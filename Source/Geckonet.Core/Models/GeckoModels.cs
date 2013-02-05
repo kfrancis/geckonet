@@ -369,7 +369,7 @@ using Newtonsoft.Json.Converters;
     [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
     public class GeckoLineChart
     {
-        [DataMember(Name = "item", IsRequired = false), XmlElement("items"), JsonProperty("items")]
+        [DataMember(Name = "item", IsRequired = false), XmlElement("item"), JsonProperty("item")]
         public List<string> Items { get; set; }
         public bool ShouldSerializeItems() { return (Items != null) && (Items.Count > 0); }
 
