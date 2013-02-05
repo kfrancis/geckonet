@@ -30,15 +30,13 @@
 namespace Geckonet.Core.Models
 {
     #region Imports
-    using Newtonsoft.Json;
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Xml.Serialization;
+    using Newtonsoft.Json;
+    
     #endregion
 
     /// <summary>
@@ -91,6 +89,10 @@ namespace Geckonet.Core.Models
         /// The value of this data point
         /// </summary>
         [Required, DataMember(Name = "value", IsRequired = true), XmlElement("value"), JsonProperty("value", Required = Required.Always)]
+        [StringLength(40)]
         public decimal @value { get; set; }
+
+        [DataMember(Name = "prefix", IsRequired = false), XmlElement("prefix"), JsonProperty("prefix")]
+        public string prefix { get; set; }
     }
 }
