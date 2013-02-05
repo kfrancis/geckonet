@@ -105,10 +105,11 @@ using System.Collections.Generic;
         public bool ShouldSerializePrefix() { return !string.IsNullOrEmpty(Prefix); }
     }
 
-    [DataContract(Namespace = ""), XmlRoot("points", Namespace = ""), JsonArray("points")]
-    public class GeckoMapPoints : List<MapPoint>
+    [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
+    public class GeckoMapPoints
     {
-
+        [Required, DataMember(Name = "points", IsRequired = true), XmlElement("points"), JsonProperty("points")]
+        public List<MapPoint> Points { get; set; }
     }
 
     [DataContract(Name = "point", Namespace = ""), XmlType("point", Namespace = "")]

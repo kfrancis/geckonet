@@ -36,11 +36,13 @@ namespace Geckonet.Sample.Controllers
                 // You would modify what gets returned here to make it meaningful 
                 var retVal = new GeckoMapPoints()
                 {
-                    new MapPoint() { City = new MapCity() { CityName = "london", CountryCode = "GB" }, Size=8, Color="d8f709", CssClass="mycss" },
-                    new MapPoint() { City = new MapCity() { CityName = "San Francisco", CountryCode="US", RegionCode = "CA" } },
-                    new MapPoint() { Latitude = 51.526263f, Longitude = -0.092429f },
-                    new MapPoint() { Host = "geckoboard.com" },
-                    new MapPoint() { IP = "72.38.123.170" }
+                    Points = new List<MapPoint>() {
+                        new MapPoint() { City = new MapCity() { CityName = "london", CountryCode = "GB" }, Size=8, Color="d8f709", CssClass="mycss" },
+                        new MapPoint() { City = new MapCity() { CityName = "San Francisco", CountryCode="US", RegionCode = "CA" } },
+                        new MapPoint() { Latitude = 51.526263f, Longitude = -0.092429f },
+                        new MapPoint() { Host = "geckoboard.com" },
+                        new MapPoint() { IP = "72.38.123.170" }
+                    }
                 };
 
                 return this.Request.CreateResponse<GeckoMapPoints>(HttpStatusCode.OK, retVal);
