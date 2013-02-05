@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Geckonet.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,33 +8,56 @@ using System.Web.Http;
 
 namespace Geckonet.Sample.Controllers
 {
+    [Authorize]
     public class ValuesController : ApiController
     {
-        // GET api/values
-        public IQueryable<string> Get()
+        private Random rand = new Random();
+
+        [HttpGet]
+        [ActionName("numberandsecondarystat")]
+        public HttpResponseMessage NumberAndSecondaryStat()
         {
-            return new string[] { "value1", "value2" }.AsQueryable();
+            try
+            {
+                if (!User.Identity.IsAuthenticated) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception("User not authorized.")); }
+
+                var retVal = new NumberAndSecondaryStat();
+                var items = new List<DataItem>() { 
+                    new DataItem(){ text = "test1", value = rand.Next(100) },
+                    new DataItem(){ text = "test2", value = rand.Next(100) }
+                };
+                retVal.DataItems = items.ToArray();
+
+                return this.Request.CreateResponse<NumberAndSecondaryStat>(HttpStatusCode.OK, retVal);
+            }
+            catch (Exception ex)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
         }
 
-        // GET api/values/5
-        public string Get(int id)
+        [HttpGet]
+        [ActionName("ragnumbersonly")]
+        public HttpResponseMessage RAGNumbersOnly()
         {
-            return "value";
-        }
+            try
+            {
+                if (!User.Identity.IsAuthenticated) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception("User not authorized.")); }
 
-        // POST api/values
-        public void Post([FromBody]string value)
-        {
-        }
+                var retVal = new RAGNumbersOnly();
+                var items = new List<DataItem>() { 
+                    new DataItem(){ text = "test1", value = rand.Next(100) },
+                    new DataItem(){ text = "test2", value = rand.Next(100) },
+                    new DataItem(){ text = "test3", value = rand.Next(100) }
+                };
+                retVal.DataItems = items.ToArray();
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
+                return this.Request.CreateResponse<RAGNumbersOnly>(HttpStatusCode.OK, retVal);
+            }
+            catch (Exception ex)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
         }
     }
 }

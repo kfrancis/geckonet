@@ -41,6 +41,21 @@ namespace Geckonet.Core.Models
     #endregion
 
     /// <summary>
+    /// Response consists of 3 values each with an associated description. The first value will be coloured red, 
+    /// the second will be amber value and the third, green. If the value = 0 or is blank, the corresponding 
+    /// indicator won’t be displayed. Description is a max 40 characters but you may need to see what fits best
+    /// in the available space on the widget.
+    /// See <a href="http://docs.geckoboard.com/custom-widgets/rag.html">documentation</a>.
+    /// </summary>
+    [DataContract(Name = "root", Namespace = ""), XmlRoot("root", Namespace = "")]
+    public class RAGNumbersOnly
+    {
+        [XmlElement("item")]
+        [MaxLength(3)]
+        public DataItem[] DataItems { get; set; }
+    }
+
+    /// <summary>
     /// Response consists of two values. First value is main to be displayed, the second value is used to work out the % change as a secondary stat.
     /// See <a href="http://docs.geckoboard.com/custom-widgets/number.html">documentation</a>.
     /// </summary>
@@ -52,12 +67,13 @@ namespace Geckonet.Core.Models
         /// </summary>
         [DataMember(Name = "absolute", IsRequired = false), XmlElement("absolute")]
         public bool? Absolute { get; set; }
+        public bool ShouldSerializeAbsolute() { return Absolute.HasValue; }
 
         [DataMember(Name = "type", IsRequired = false), XmlElement("type")]
         public string Type { get; set; }
 
-        public DataItem First { get; set; }
-        public DataItem Second { get; set; }
+        [XmlElement("item")]
+        public DataItem[] DataItems { get; set; }
     }
 
     [DataContract(Name = "item", Namespace = ""), XmlType("item", Namespace = "")]
