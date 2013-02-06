@@ -122,7 +122,47 @@ namespace Geckonet.Sample.Controllers
         }
 
         /// <summary>
-        /// Endpoint for the geckometer chart
+        /// Endpoint for the funnel chart
+        /// </summary>
+        /// <param name="format">The format for the return, since not configurable, is just set by default.</param>
+        /// <param name="type">The type of widget as defined on their documentation</param>
+        /// <returns>A response, containing random information if authorized.</returns>
+        [HttpGet]
+        [ActionName("funnel")]
+        public HttpResponseMessage Funnel([FromUri]string format = "JSON", [FromUri]string type = "1")
+        {
+            try
+            {
+                if (!User.Identity.IsAuthenticated) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception("API key not specified.")); }
+                if (Guid.Parse(ConfigurationManager.AppSettings["GeckoAPIkey"]).ToString() != User.Identity.Name) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception(string.Format("Unknown API key, should be '{0}'.", ConfigurationManager.AppSettings["GeckoAPIkey"]))); }
+                //if (int.Parse(type) != 1) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("Type parameter '{0}' is wrong.", type))); }
+
+                // You would modify what gets returned here to make it meaningful 
+                var retVal = new GeckoFunnelChart()
+                {
+                    Items = new List<DataItem>()
+                    {
+                        new DataItem() { Value = 87809, Label = "Step1" },
+                        new DataItem() { Value = 70022, Label = "Step2" },
+                        new DataItem() { Value = 63232, Label = "Step3" },
+                        new DataItem() { Value = 53232, Label = "Step4" },
+                        new DataItem() { Value = 32123, Label = "Step5" },
+                        new DataItem() { Value = 23232, Label = "Step6" },
+                        new DataItem() { Value = 12232, Label = "Step7" },
+                        new DataItem() { Value = 2323, Label = "Step8" },
+                    }
+                };
+
+                return this.Request.CreateResponse<GeckoFunnelChart>(HttpStatusCode.OK, retVal);
+            }
+            catch (Exception ex)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        /// <summary>
+        /// Endpoint for the bullet chart
         /// </summary>
         /// <param name="format">The format for the return, since not configurable, is just set by default.</param>
         /// <param name="type">The type of widget as defined on their documentation</param>

@@ -106,6 +106,10 @@ using Newtonsoft.Json.Converters;
         [DataMember(Name = "prefix", IsRequired = false), XmlElement("prefix"), JsonProperty("prefix")]
         public string Prefix { get; set; }
         public bool ShouldSerializePrefix() { return !string.IsNullOrEmpty(Prefix); }
+
+        [DataMember(Name = "label", IsRequired = false), XmlElement("label"), JsonProperty("label")]
+        public string Label { get; set; }
+        public bool ShouldSerializeLabel() { return !string.IsNullOrEmpty(Label); }
     }
 
     public enum DataItemType
@@ -506,11 +510,23 @@ using Newtonsoft.Json.Converters;
         public int? Point { get; set; }
         public bool ShouldSerializePoint() { return Point.HasValue; }
     }
+    #endregion
 
-    public enum GeckoBulletOrientation
+    #region Funnel
+    [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
+    public class GeckoFunnelChart
     {
-        Horizontal,
-        Vertical
+        [DataMember(Name = "type", IsRequired = false), XmlElement("type"), JsonProperty("type")]
+        public string Type { get; set; }
+        public bool ShouldSerializeType() { return !string.IsNullOrWhiteSpace(Type); }
+
+        [DataMember(Name = "percentage", IsRequired = false), XmlElement("percentage"), JsonProperty("percentage")]
+        public string PercentageMode { get; set; }
+        public bool ShouldSerializePercentageMode() { return !string.IsNullOrWhiteSpace(PercentageMode); }
+
+        [DataMember(Name = "item", IsRequired = false), XmlElement("item"), JsonProperty("item")]
+        public List<DataItem> Items { get; set; }
+        public bool ShouldSerializeItems() { return (Items != null) && (Items.Count > 0); }
     }
     #endregion
 }
