@@ -54,7 +54,7 @@ namespace Geckonet.Sample.Controllers
         }
 
         /// <summary>
-        /// Endpoint for the number and secondary stat custom widget
+        /// Endpoint for the line custom chart
         /// </summary>
         /// <param name="format">The format for the return, since not configurable, is just set by default.</param>
         /// <param name="type">The type of widget as defined on their documentation</param>
@@ -82,6 +82,38 @@ namespace Geckonet.Sample.Controllers
                 };
 
                 return this.Request.CreateResponse<GeckoLineChart>(HttpStatusCode.OK, retVal);
+            }
+            catch (Exception ex)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        /// <summary>
+        /// Endpoint for the line custom chart
+        /// </summary>
+        /// <param name="format">The format for the return, since not configurable, is just set by default.</param>
+        /// <param name="type">The type of widget as defined on their documentation</param>
+        /// <returns>A response, containing random information if authorized.</returns>
+        [HttpGet]
+        [ActionName("geckometer")]
+        public HttpResponseMessage GeckoMeter([FromUri]string format = "JSON", [FromUri]string type = "1")
+        {
+            try
+            {
+                if (!User.Identity.IsAuthenticated) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception("API key not specified.")); }
+                if (Guid.Parse(ConfigurationManager.AppSettings["GeckoAPIkey"]).ToString() != User.Identity.Name) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception(string.Format("Unknown API key, should be '{0}'.", ConfigurationManager.AppSettings["GeckoAPIkey"]))); }
+                //if (int.Parse(type) != 1) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("Type parameter '{0}' is wrong.", type))); }
+
+                // You would modify what gets returned here to make it meaningful 
+                var retVal = new GeckoMeterChart()
+                {
+                    Item = 23,
+                    Min = new DataItem() { Value = 10, Text = "Min visitors" },
+                    Max = new DataItem() { Value = 30, Text = "Max visitors" }
+                };
+
+                return this.Request.CreateResponse<GeckoMeterChart>(HttpStatusCode.OK, retVal);
             }
             catch (Exception ex)
             {

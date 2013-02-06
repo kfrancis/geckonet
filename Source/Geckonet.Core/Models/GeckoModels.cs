@@ -362,7 +362,7 @@ using Newtonsoft.Json.Converters;
 
 #endregion
     
-#region Pie Chart
+    #region Pie Chart
 #endregion
 
     #region Line Chart
@@ -395,5 +395,21 @@ using Newtonsoft.Json.Converters;
     }
     
     #endregion
+
+    [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
+    public class GeckoMeterChart
+    {
+        [DataMember(Name = "item", IsRequired = false), XmlElement("item"), JsonProperty("item")]
+        public int? Item { get; set; }
+        public bool ShouldSerializeItem() { return Item.HasValue; }
+
+        [DataMember(Name = "min", IsRequired = false), XmlElement("min"), JsonProperty("min")]
+        public DataItem Min { get; set; }
+        public bool ShouldSerializeMin() { return Min != null; }
+
+        [DataMember(Name = "max", IsRequired = false), XmlElement("max"), JsonProperty("max")]
+        public DataItem Max { get; set; }
+        public bool ShouldSerializeMax() { return Max != null; }
+    }
 
 }
