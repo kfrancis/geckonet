@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
+    <id>geckonet</id>
     <version>$version$</version>
-    <title>$title$</title>
+    <title>Geckoboard.Net</title>
     <authors>Kori Francis</authors>
-    <owners>$author$</owners>
     <projectUrl>https://github.com/kfrancis/geckonet</projectUrl>
     <description>A comprehensive C# API wrapper library for accessing Geckoboard.com, using XML or JSON to read/write widget data easily using strong-typed models</description>
     <copyright>Copyright 2013</copyright>
