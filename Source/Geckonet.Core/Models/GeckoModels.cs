@@ -393,9 +393,9 @@ using Newtonsoft.Json.Converters;
         public string Colour { get; set; }
         public bool ShouldSerializeColour() { return !string.IsNullOrWhiteSpace(Colour); }
     }
-    
     #endregion
 
+    #region GeckoMeter
     [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
     public class GeckoMeterChart
     {
@@ -411,5 +411,98 @@ using Newtonsoft.Json.Converters;
         public DataItem Max { get; set; }
         public bool ShouldSerializeMax() { return Max != null; }
     }
+    #endregion
 
+    #region Bullet
+    [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
+    public class GeckoBulletChart
+    {
+        [DataMember(Name = "orientation", IsRequired = false), XmlElement("orientation"), JsonProperty("orientation")]
+        public GeckoBulletOrientation Orientation { get; set; }
+
+        [DataMember(Name = "item", IsRequired = false), XmlElement("item"), JsonProperty("item")]
+        public GeckoBulletItem Item { get; set; }
+    }
+
+    [DataContract(Name = "item", Namespace = ""), XmlType("item", Namespace = "")]
+    public class GeckoBulletItem
+    {
+        [DataMember(Name = "label", IsRequired = false), XmlElement("label"), JsonProperty("label")]
+        public string Label { get; set; }
+        public bool ShouldSerializeLabel() { return !string.IsNullOrWhiteSpace(Label); }
+
+        [DataMember(Name = "sublabel", IsRequired = false), XmlElement("sublabel"), JsonProperty("sublabel")]
+        public string SubLabel { get; set; }
+        public bool ShouldSerializeSubLabel() { return !string.IsNullOrWhiteSpace(SubLabel); }
+
+        [DataMember(Name = "axis", IsRequired = false), XmlElement("axis"), JsonProperty("axis")]
+        public List<GeckoBulletPoint> Axis { get; set; }
+        public bool ShouldSerializeAxis() { return (Axis != null) && (Axis.Count > 0); }
+
+        [DataMember(Name = "range", IsRequired = false), XmlElement("range"), JsonProperty("range")]
+        public GeckoBulletRange Range { get; set; }
+        public bool ShouldSerializeRange() { return Range != null; }
+
+        [DataMember(Name = "measure", IsRequired = false), XmlElement("measure"), JsonProperty("measure")]
+        public GeckoBulletMeasure Measure { get; set; }
+        public bool ShouldSerializeMeasure() { return Measure != null; }
+
+        [DataMember(Name = "comparitive", IsRequired = false), XmlElement("comparitive"), JsonProperty("comparitive")]
+        public List<GeckoBulletPoint> Comparitive { get; set; }
+        public bool ShouldSerializeComparitive() { return (Comparitive != null) && (Comparitive.Count > 0); }
+    }
+
+    [DataContract(Name = "measure", Namespace = ""), XmlType("measure", Namespace = "")]
+    public class GeckoBulletMeasure
+    {
+        [DataMember(Name = "current", IsRequired = false), XmlElement("current"), JsonProperty("current")]
+        public GeckoBulletRangeItem Current { get; set; }
+        public bool ShouldSerializeCurrent() { return Current != null; }
+
+        [DataMember(Name = "projected", IsRequired = false), XmlElement("projected"), JsonProperty("projected")]
+        public GeckoBulletRangeItem Projected { get; set; }
+        public bool ShouldSerializeProjected() { return Projected != null; }
+    }
+
+    [DataContract(Name = "range", Namespace = ""), XmlType("range", Namespace = "")]
+    public class GeckoBulletRange
+    {
+        [DataMember(Name = "red", IsRequired = false), XmlElement("red"), JsonProperty("red")]
+        public GeckoBulletRangeItem Red { get; set; }
+        public bool ShouldSerializeRed() { return Red != null; }
+
+        [DataMember(Name = "amber", IsRequired = false), XmlElement("amber"), JsonProperty("amber")]
+        public GeckoBulletRangeItem Amber { get; set; }
+        public bool ShouldSerializeAmber() { return Amber != null; }
+
+        [DataMember(Name = "green", IsRequired = false), XmlElement("green"), JsonProperty("green")]
+        public GeckoBulletRangeItem Green { get; set; }
+        public bool ShouldSerializeGreen() { return Green != null; }
+    }
+  
+    public class GeckoBulletRangeItem
+    {
+        [DataMember(Name = "start", IsRequired = false), XmlElement("start"), JsonProperty("start")]
+        public int? Start { get; set; }
+        public bool ShouldSerializeStart() { return Start.HasValue; }
+
+        [DataMember(Name = "end", IsRequired = false), XmlElement("end"), JsonProperty("end")]
+        public int? End { get; set; }
+        public bool ShouldSerializeEnd() { return End.HasValue; }
+    }
+
+    [DataContract(Name = "point", Namespace = ""), XmlType("point", Namespace = "")]
+    public class GeckoBulletPoint
+    {
+        [DataMember(Name = "point", IsRequired = false), XmlElement("point"), JsonProperty("point")]
+        public int? Point { get; set; }
+        public bool ShouldSerializePoint() { return Point.HasValue; }
+    }
+
+    public enum GeckoBulletOrientation
+    {
+        Horizontal,
+        Vertical
+    }
+    #endregion
 }

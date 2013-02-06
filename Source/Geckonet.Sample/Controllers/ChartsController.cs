@@ -90,7 +90,7 @@ namespace Geckonet.Sample.Controllers
         }
 
         /// <summary>
-        /// Endpoint for the line custom chart
+        /// Endpoint for the geckometer chart
         /// </summary>
         /// <param name="format">The format for the return, since not configurable, is just set by default.</param>
         /// <param name="type">The type of widget as defined on their documentation</param>
@@ -114,6 +114,65 @@ namespace Geckonet.Sample.Controllers
                 };
 
                 return this.Request.CreateResponse<GeckoMeterChart>(HttpStatusCode.OK, retVal);
+            }
+            catch (Exception ex)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        /// <summary>
+        /// Endpoint for the geckometer chart
+        /// </summary>
+        /// <param name="format">The format for the return, since not configurable, is just set by default.</param>
+        /// <param name="type">The type of widget as defined on their documentation</param>
+        /// <returns>A response, containing random information if authorized.</returns>
+        [HttpGet]
+        [ActionName("bullet")]
+        public HttpResponseMessage Bullet([FromUri]string format = "JSON", [FromUri]string type = "1")
+        {
+            try
+            {
+                if (!User.Identity.IsAuthenticated) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception("API key not specified.")); }
+                if (Guid.Parse(ConfigurationManager.AppSettings["GeckoAPIkey"]).ToString() != User.Identity.Name) { return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, new Exception(string.Format("Unknown API key, should be '{0}'.", ConfigurationManager.AppSettings["GeckoAPIkey"]))); }
+                //if (int.Parse(type) != 1) { return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, new ArgumentException(string.Format("Type parameter '{0}' is wrong.", type))); }
+
+                // You would modify what gets returned here to make it meaningful 
+                var retVal = new GeckoBulletChart()
+                {
+                    Orientation = GeckoBulletOrientation.Horizontal,
+                    Item = new GeckoBulletItem()
+                    {
+                        Label = "Revenue 2011 YTD",
+                        SubLabel = "(U.S. $ in thousands)",
+                        Axis = new List<GeckoBulletPoint>()
+                        {
+                            new GeckoBulletPoint() { Point = 0 },
+                            new GeckoBulletPoint() { Point = 200 },
+                            new GeckoBulletPoint() { Point = 400 },
+                            new GeckoBulletPoint() { Point = 600 },
+                            new GeckoBulletPoint() { Point = 800 },
+                            new GeckoBulletPoint() { Point = 1000 }
+                        },
+                        Range = new GeckoBulletRange()
+                        {
+                            Red = new GeckoBulletRangeItem() { Start = 0, End = 400 },
+                            Amber = new GeckoBulletRangeItem() { Start = 401, End = 700 },
+                            Green = new GeckoBulletRangeItem() { Start = 701, End = 1000 }
+                        },
+                        Measure = new GeckoBulletMeasure()
+                        {
+                            Current = new GeckoBulletRangeItem() { Start = 0, End = 500 },
+                            Projected = new GeckoBulletRangeItem() { Start = 100, End = 900 }
+                        },
+                        Comparitive = new List<GeckoBulletPoint>() 
+                        { 
+                            new GeckoBulletPoint() { Point = 600 }
+                        }
+                    }
+                };
+
+                return this.Request.CreateResponse<GeckoBulletChart>(HttpStatusCode.OK, retVal);
             }
             catch (Exception ex)
             {
