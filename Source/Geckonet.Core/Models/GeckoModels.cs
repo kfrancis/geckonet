@@ -418,7 +418,8 @@ using Newtonsoft.Json.Converters;
     public class GeckoBulletChart
     {
         [DataMember(Name = "orientation", IsRequired = false), XmlElement("orientation"), JsonProperty("orientation")]
-        public GeckoBulletOrientation Orientation { get; set; }
+        public string Orientation { get; set; }
+        public bool ShouldSerializeOrientation() { return !string.IsNullOrWhiteSpace(Orientation); }
 
         [DataMember(Name = "item", IsRequired = false), XmlElement("item"), JsonProperty("item")]
         public GeckoBulletItem Item { get; set; }
@@ -436,8 +437,8 @@ using Newtonsoft.Json.Converters;
         public bool ShouldSerializeSubLabel() { return !string.IsNullOrWhiteSpace(SubLabel); }
 
         [DataMember(Name = "axis", IsRequired = false), XmlElement("axis"), JsonProperty("axis")]
-        public List<GeckoBulletPoint> Axis { get; set; }
-        public bool ShouldSerializeAxis() { return (Axis != null) && (Axis.Count > 0); }
+        public GeckoBulletAxis Axis { get; set; }
+        public bool ShouldSerializeAxis() { return Axis != null; }
 
         [DataMember(Name = "range", IsRequired = false), XmlElement("range"), JsonProperty("range")]
         public GeckoBulletRange Range { get; set; }
@@ -450,6 +451,13 @@ using Newtonsoft.Json.Converters;
         [DataMember(Name = "comparitive", IsRequired = false), XmlElement("comparitive"), JsonProperty("comparitive")]
         public List<GeckoBulletPoint> Comparitive { get; set; }
         public bool ShouldSerializeComparitive() { return (Comparitive != null) && (Comparitive.Count > 0); }
+    }
+
+    [DataContract(Name = "point", Namespace = ""), XmlType("point", Namespace = "")]
+    public class GeckoBulletAxis
+    {
+        [DataMember(Name = "point", IsRequired = false), XmlElement("point"), JsonProperty("point")]
+        public List<int> Points { get; set; }
     }
 
     [DataContract(Name = "measure", Namespace = ""), XmlType("measure", Namespace = "")]

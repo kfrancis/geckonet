@@ -140,19 +140,14 @@ namespace Geckonet.Sample.Controllers
                 // You would modify what gets returned here to make it meaningful 
                 var retVal = new GeckoBulletChart()
                 {
-                    Orientation = GeckoBulletOrientation.Horizontal,
+                    Orientation = "horizontal",
                     Item = new GeckoBulletItem()
                     {
                         Label = "Revenue 2011 YTD",
                         SubLabel = "(U.S. $ in thousands)",
-                        Axis = new List<GeckoBulletPoint>()
+                        Axis = new GeckoBulletAxis()
                         {
-                            new GeckoBulletPoint() { Point = 0 },
-                            new GeckoBulletPoint() { Point = 200 },
-                            new GeckoBulletPoint() { Point = 400 },
-                            new GeckoBulletPoint() { Point = 600 },
-                            new GeckoBulletPoint() { Point = 800 },
-                            new GeckoBulletPoint() { Point = 1000 }
+                            Points = new List<int>() { 0, 200, 400, 600, 800, 1000 }
                         },
                         Range = new GeckoBulletRange()
                         {
