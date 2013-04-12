@@ -494,6 +494,10 @@ using Newtonsoft.Json.Converters;
   
     public class GeckoBulletRangeItem
     {
+        [DataMember(Name = "color", IsRequired = false), XmlElement("color"), JsonProperty("color")]
+        public string Color { get; set; }
+        public bool ShouldSerializeColor() { return !string.IsNullOrWhiteSpace(Color); }
+
         [DataMember(Name = "start", IsRequired = false), XmlElement("start"), JsonProperty("start")]
         public int? Start { get; set; }
         public bool ShouldSerializeStart() { return Start.HasValue; }
