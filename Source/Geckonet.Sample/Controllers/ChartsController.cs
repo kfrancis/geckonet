@@ -187,13 +187,13 @@ namespace Geckonet.Sample.Controllers
                         SubLabel = "(U.S. $ in thousands)",
                         Axis = new GeckoBulletAxis()
                         {
-                            Points = new List<int>() { 0, 200, 400, 600, 800, 1000 }
+                            Points = new List<string>() { "0", "200", "400", "600", "800", "1000" }
                         },
-                        Range = new GeckoBulletRange()
+                        Range = new List<GeckoBulletRangeItem>()
                         {
-                            Red = new GeckoBulletRangeItem() { Start = 0, End = 400 },
-                            Amber = new GeckoBulletRangeItem() { Start = 401, End = 700 },
-                            Green = new GeckoBulletRangeItem() { Start = 701, End = 1000 }
+                            new GeckoBulletRangeItem() { Color = "red", Start = 0, End = 400 },
+                            new GeckoBulletRangeItem() { Color = "amber", Start = 401, End = 700 },
+                            new GeckoBulletRangeItem() { Color = "green", Start = 701, End = 1000 }
                         },
                         Measure = new GeckoBulletMeasure()
                         {

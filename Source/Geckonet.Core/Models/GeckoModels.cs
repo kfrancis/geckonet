@@ -445,7 +445,7 @@ using Newtonsoft.Json.Converters;
         public bool ShouldSerializeAxis() { return Axis != null; }
 
         [DataMember(Name = "range", IsRequired = false), XmlElement("range"), JsonProperty("range")]
-        public GeckoBulletRange Range { get; set; }
+        public List<GeckoBulletRangeItem> Range { get; set; }
         public bool ShouldSerializeRange() { return Range != null; }
 
         [DataMember(Name = "measure", IsRequired = false), XmlElement("measure"), JsonProperty("measure")]
@@ -461,7 +461,7 @@ using Newtonsoft.Json.Converters;
     public class GeckoBulletAxis
     {
         [DataMember(Name = "point", IsRequired = false), XmlElement("point"), JsonProperty("point")]
-        public List<int> Points { get; set; }
+        public List<string> Points { get; set; }
     }
 
     [DataContract(Name = "measure", Namespace = ""), XmlType("measure", Namespace = "")]
@@ -476,6 +476,7 @@ using Newtonsoft.Json.Converters;
         public bool ShouldSerializeProjected() { return Projected != null; }
     }
 
+    [Obsolete("Range should now be List<GeckoBulletRangeItem>, please change your code")]
     [DataContract(Name = "range", Namespace = ""), XmlType("range", Namespace = "")]
     public class GeckoBulletRange
     {
