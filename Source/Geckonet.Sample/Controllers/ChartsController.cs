@@ -200,9 +200,9 @@ namespace Geckonet.Sample.Controllers
                             Current = new GeckoBulletRangeItemString() { Start = "0", End = "500" },
                             Projected = new GeckoBulletRangeItemString() { Start = "100", End = "900" }
                         },
-                        Comparitive = new GeckoBulletPoint() 
+                        Comparitive = new GeckoBulletPointString() 
                         {
-                            Point = 600
+                            Point = "600"
                         }
                     }
                 };

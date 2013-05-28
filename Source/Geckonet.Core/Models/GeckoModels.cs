@@ -453,7 +453,7 @@ using Newtonsoft.Json.Converters;
         public bool ShouldSerializeMeasure() { return Measure != null; }
 
         [DataMember(Name = "comparitive", IsRequired = false), XmlElement("comparitive"), JsonProperty("comparitive")]
-        public GeckoBulletPoint Comparitive { get; set; }
+        public GeckoBulletPointString Comparitive { get; set; }
         public bool ShouldSerializeComparitive() { return Comparitive != null; }
     }
 
@@ -529,6 +529,14 @@ using Newtonsoft.Json.Converters;
         [DataMember(Name = "point", IsRequired = false), XmlElement("point"), JsonProperty("point")]
         public int? Point { get; set; }
         public bool ShouldSerializePoint() { return Point.HasValue; }
+    }
+
+    [DataContract(Name = "point", Namespace = ""), XmlType("point", Namespace = "")]
+    public class GeckoBulletPointString
+    {
+        [DataMember(Name = "point", IsRequired = false), XmlElement("point"), JsonProperty("point")]
+        public string Point { get; set; }
+        public bool ShouldSerializePoint() { return !string.IsNullOrWhiteSpace(Point); }
     }
     #endregion
 
