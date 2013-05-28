@@ -453,8 +453,8 @@ using Newtonsoft.Json.Converters;
         public bool ShouldSerializeMeasure() { return Measure != null; }
 
         [DataMember(Name = "comparitive", IsRequired = false), XmlElement("comparitive"), JsonProperty("comparitive")]
-        public List<GeckoBulletPoint> Comparitive { get; set; }
-        public bool ShouldSerializeComparitive() { return (Comparitive != null) && (Comparitive.Count > 0); }
+        public GeckoBulletPoint Comparitive { get; set; }
+        public bool ShouldSerializeComparitive() { return Comparitive != null; }
     }
 
     [DataContract(Name = "point", Namespace = ""), XmlType("point", Namespace = "")]
