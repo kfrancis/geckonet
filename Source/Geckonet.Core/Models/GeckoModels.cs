@@ -468,11 +468,11 @@ using Newtonsoft.Json.Converters;
     public class GeckoBulletMeasure
     {
         [DataMember(Name = "current", IsRequired = false), XmlElement("current"), JsonProperty("current")]
-        public GeckoBulletRangeItem Current { get; set; }
+        public GeckoBulletRangeItemString Current { get; set; }
         public bool ShouldSerializeCurrent() { return Current != null; }
 
         [DataMember(Name = "projected", IsRequired = false), XmlElement("projected"), JsonProperty("projected")]
-        public GeckoBulletRangeItem Projected { get; set; }
+        public GeckoBulletRangeItemString Projected { get; set; }
         public bool ShouldSerializeProjected() { return Projected != null; }
     }
 
@@ -506,6 +506,21 @@ using Newtonsoft.Json.Converters;
         [DataMember(Name = "end", IsRequired = false), XmlElement("end"), JsonProperty("end")]
         public int? End { get; set; }
         public bool ShouldSerializeEnd() { return End.HasValue; }
+    }
+
+    public class GeckoBulletRangeItemString
+    {
+        [DataMember(Name = "color", IsRequired = false), XmlElement("color"), JsonProperty("color")]
+        public string Color { get; set; }
+        public bool ShouldSerializeColor() { return !string.IsNullOrWhiteSpace(Color); }
+
+        [DataMember(Name = "start", IsRequired = false), XmlElement("start"), JsonProperty("start")]
+        public string Start { get; set; }
+        public bool ShouldSerializeStart() { return !string.IsNullOrWhiteSpace(Start); }
+
+        [DataMember(Name = "end", IsRequired = false), XmlElement("end"), JsonProperty("end")]
+        public string End { get; set; }
+        public bool ShouldSerializeEnd() { return !string.IsNullOrWhiteSpace(End); }
     }
 
     [DataContract(Name = "point", Namespace = ""), XmlType("point", Namespace = "")]

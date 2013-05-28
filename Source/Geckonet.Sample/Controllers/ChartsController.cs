@@ -197,8 +197,8 @@ namespace Geckonet.Sample.Controllers
                         },
                         Measure = new GeckoBulletMeasure()
                         {
-                            Current = new GeckoBulletRangeItem() { Start = 0, End = 500 },
-                            Projected = new GeckoBulletRangeItem() { Start = 100, End = 900 }
+                            Current = new GeckoBulletRangeItemString() { Start = "0", End = "500" },
+                            Projected = new GeckoBulletRangeItemString() { Start = "100", End = "900" }
                         },
                         Comparitive = new GeckoBulletPoint() 
                         {
