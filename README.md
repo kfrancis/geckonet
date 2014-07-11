@@ -24,5 +24,9 @@ To see how the endpoints from the asp.net web api project work, do the following
 
 The widget should then appear on your dashboard with random data everytime it's refreshed.
 
+## Example Output
+
+GET http://geckonet.azurewebsites.net/api/Widgets/numberandsecondarystat?apiKey=27c4168c-5b25-44ac-824a-e77a2984522c
+
 #### Thanks!
 Kori Francis ([@djbyter](http://twitter.com/djbyter))
