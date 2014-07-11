@@ -24,9 +24,21 @@ To see how the endpoints from the asp.net web api project work, do the following
 
 The widget should then appear on your dashboard with random data everytime it's refreshed.
 
-## Example Output
+## Live Examples
 
-GET http://geckonet.azurewebsites.net/api/Widgets/numberandsecondarystat?apiKey=27c4168c-5b25-44ac-824a-e77a2984522c
+### Live Widget Endpoints
+* `http://geckonet.azurewebsites.net/api/widgets/numberandsecondarystat?apiKey=27c4168c-5b25-44ac-824a-e77a2984522c`
+* `http://geckonet.azurewebsites.net/api/widgets/ragnumbersonly?apiKey=27c4168c-5b25-44ac-824a-e77a2984522c`
+* `http://geckonet.azurewebsites.net/api/widgets/ragcolumnandnumbers?apiKey=27c4168c-5b25-44ac-824a-e77a2984522c`
+* `http://geckonet.azurewebsites.net/api/widgets/text?apiKey=27c4168c-5b25-44ac-824a-e77a2984522c`
+
+### Live Chart Endpoints
+* `http://geckonet.azurewebsites.net/api/charts/map?apiKey=27c4168c-5b25-44ac-824a-e77a2984522c`
+* `http://geckonet.azurewebsites.net/api/charts/line?apiKey=27c4168c-5b25-44ac-824a-e77a2984522c`
+* `http://geckonet.azurewebsites.net/api/charts/geckometer?apiKey=27c4168c-5b25-44ac-824a-e77a2984522c`
+* `http://geckonet.azurewebsites.net/api/charts/funnel?apiKey=27c4168c-5b25-44ac-824a-e77a2984522c`
+* `http://geckonet.azurewebsites.net/api/charts/bullet?apiKey=27c4168c-5b25-44ac-824a-e77a2984522c`
+* `http://geckonet.azurewebsites.net/api/charts/highchart?apiKey=27c4168c-5b25-44ac-824a-e77a2984522c`
 
 #### Thanks!
 Kori Francis ([@djbyter](http://twitter.com/djbyter))
