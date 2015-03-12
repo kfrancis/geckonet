@@ -89,7 +89,7 @@ using Newtonsoft.Json.Converters;
         /// </summary>
         [Required, DataMember(Name = "text", IsRequired = true), XmlElement("text"), JsonProperty("text", Required = Required.AllowNull)]
         public string Text { get; set; }
-        public bool ShouldSerializeText() { return !string.IsNullOrEmpty(Text); }
+        //public bool ShouldSerializeText() { return !string.IsNullOrEmpty(Text); }
 
         /// <summary>
         /// The value of this data point
@@ -557,4 +557,16 @@ using Newtonsoft.Json.Converters;
         public bool ShouldSerializeItems() { return (Items != null) && (Items.Count > 0); }
     }
     #endregion
+
+#region Push
+    public class PushPayload<T>
+    {
+        [JsonProperty("api_key", Required=Required.Always)]
+        public string ApiKey { get; set; }
+        public bool ShouldSerializeApiKey() { return !string.IsNullOrEmpty(ApiKey); }
+
+        [JsonProperty("data", Required = Required.Always)]
+        public T Data { get; set; }
+    }
+#endregion
 }

@@ -26,7 +26,6 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 #endregion
-
 namespace Geckonet.Core
 {
     #region Imports
@@ -36,9 +35,65 @@ namespace Geckonet.Core
     using System.Text;
     using System.Threading.Tasks;
     using Geckonet.Core.Models;
+    using Geckonet.Core.Serialization;
+    using RestSharp;
+using Newtonsoft.Json;
+
     #endregion
 
     public class GeckoConnect
     {
+        private static string _userAgent;
+        private static string UserAgent
+        {
+            get
+            {
+                if (_userAgent == null)
+                {
+                    _userAgent = String.Format("Geckonet .NET RestSharp Client v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                }
+                return _userAgent;
+            }
+        }
+
+        public PushResult Push<T>(PushPayload<T> payload, string widgetKey)
+        {
+            var client = new RestClient("https://push.geckoboard.com");
+            client.UserAgent = GeckoConnect.UserAgent;
+
+            var request = new RestRequest(string.Format("v1/send/{0}", widgetKey), Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddHeader("Content-Type", "application/json");
+            request.JsonSerializer = new RestSharpJsonNetSerializer();
+            request.AddParameter("application/json", request.JsonSerializer.Serialize(payload), ParameterType.RequestBody);
+            
+            var response = client.Execute<PushResult>(request);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new GeckoException(response.StatusDescription);
+            }
+
+            return response.Data;
+        }
+    }
+ 
+    public class GeckoException : Exception
+    {
+        private string s;
+
+        public GeckoException(string s)
+        {
+            this.s = s;
+        }
+    }
+ 
+    public class PushResult
+    {
+        [JsonProperty("success")]
+        public bool Success { get; set; }
+
+        [JsonProperty("message")]
+        public string Message { get; set; }
     }
 }
