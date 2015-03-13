@@ -146,3 +146,6 @@ $RECYCLE.BIN/
 
 # Mac crap
 .DS_Store
+/.nuget/NuGet.exe
+*.nupkg
+*.bat

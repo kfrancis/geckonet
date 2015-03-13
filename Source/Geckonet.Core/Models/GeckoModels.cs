@@ -31,19 +31,41 @@ namespace Geckonet.Core.Models
 {
     #region Imports
     using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml.Serialization;
     using Newtonsoft.Json;
-using System.Collections.Generic;
-    using System.Net;
-    using System.ComponentModel;
-using Newtonsoft.Json.Converters;
-    
+    using Newtonsoft.Json.Converters;
+
     #endregion
 
     #region Custom Widgets
+    [DataContract(Name = "root", Namespace = ""), XmlRoot("root", Namespace = "")]
+    public class GeckoMonitoring
+    {
+        [DataMember(Name = "status", IsRequired = true), XmlElement("status"), JsonProperty("status", Required = Required.Always)]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public MonitoringStatus? Status { get; set; }
+        public bool ShouldSerializeType() { return Status.HasValue; }
+
+        [DataMember(Name = "downtime", IsRequired = false), XmlElement("downtime"), JsonProperty("downtime")]
+        public string Downtime { get; set; }
+        public bool ShouldSerializeDowntime() { return !string.IsNullOrEmpty(Downtime); }
+
+        [DataMember(Name = "responseTime", IsRequired = false), XmlElement("responseTime"), JsonProperty("responseTime")]
+        public string ResponseTime { get; set; }
+        public bool ShouldSerializeResponseTime() { return !string.IsNullOrEmpty(ResponseTime); }
+    }
+
+    public enum MonitoringStatus
+    {
+        Up,
+        Down
+    }
+
     /// <summary>
     /// Response consists of 3 values each with an associated description. The first value will be coloured red, 
     /// the second will be amber value and the third, green. If the value = 0 or is blank, the corresponding 
@@ -129,7 +151,7 @@ using Newtonsoft.Json.Converters;
     }
 
     [DataContract(Name = "point", Namespace = ""), XmlType("point", Namespace = "")]
-    public class MapPoint 
+    public class MapPoint
     {
         [DataMember(Name = "city", IsRequired = false), XmlElement("city"), JsonProperty("city")]
         public MapCity City { get; set; }
@@ -179,10 +201,10 @@ using Newtonsoft.Json.Converters;
 
         [DataMember(Name = "region_code", IsRequired = false), XmlElement("region_code"), JsonProperty("region_code")]
         [StringLength(2)]
-        public string RegionCode { get ;set; }
+        public string RegionCode { get; set; }
         public bool ShouldSerializeRegionCode() { return !string.IsNullOrEmpty(RegionCode); }
     }
-#endregion
+    #endregion
 
     #region Highchart
 
@@ -364,10 +386,10 @@ using Newtonsoft.Json.Converters;
         public bool ShouldSerializeSeries() { return PlotShadow.HasValue; }
     }
 
-#endregion
-    
+    #endregion
+
     #region Pie Chart
-#endregion
+    #endregion
 
     #region Line Chart
     [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
@@ -492,7 +514,7 @@ using Newtonsoft.Json.Converters;
         public GeckoBulletRangeItem Green { get; set; }
         public bool ShouldSerializeGreen() { return Green != null; }
     }
-  
+
     public class GeckoBulletRangeItem
     {
         [DataMember(Name = "color", IsRequired = false), XmlElement("color"), JsonProperty("color")]
@@ -558,15 +580,15 @@ using Newtonsoft.Json.Converters;
     }
     #endregion
 
-#region Push
+    #region Push
     public class PushPayload<T>
     {
-        [JsonProperty("api_key", Required=Required.Always)]
+        [JsonProperty("api_key", Required = Required.Always)]
         public string ApiKey { get; set; }
         public bool ShouldSerializeApiKey() { return !string.IsNullOrEmpty(ApiKey); }
 
         [JsonProperty("data", Required = Required.Always)]
         public T Data { get; set; }
     }
-#endregion
+    #endregion
 }
