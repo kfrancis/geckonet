@@ -43,6 +43,7 @@ namespace Geckonet.Core.Models
     #endregion
 
     #region Custom Widgets
+
     [DataContract(Name = "root", Namespace = ""), XmlRoot("root", Namespace = "")]
     public class GeckoMonitoring
     {
@@ -436,6 +437,56 @@ namespace Geckonet.Core.Models
         [DataMember(Name = "max", IsRequired = false), XmlElement("max"), JsonProperty("max")]
         public DataItem Max { get; set; }
         public bool ShouldSerializeMax() { return Max != null; }
+    }
+    #endregion
+
+    #region Bar Chart
+    [DataContract(Name = "x_axis", Namespace = ""), XmlType("x_axis", Namespace = "")]
+    public class GeckoBarChartXAxis
+    {
+        [DataMember(Name = "labels", IsRequired = true), XmlElement("labels"), JsonProperty("labels")]
+        public List<string> Labels { get; set; }
+        public bool ShouldSerializeLabels() { return (Labels != null) && (Labels.Count > 0); }
+    }
+
+
+    [DataContract(Name = "y_axis", Namespace = ""), XmlType("y_axis", Namespace = "")]
+    public class GeckoBarChartYAxis
+    {
+        [DataMember(Name = "format", IsRequired = false), XmlElement("format"), JsonProperty("format")]
+        public string Format { get; set; }
+        public bool ShouldSerializeFormat() { return !string.IsNullOrWhiteSpace(Format); }
+
+        [DataMember(Name = "unit", IsRequired = false), XmlElement("unit"), JsonProperty("unit")]
+        public string Unit { get; set; }
+        public bool ShouldSerializeUnit() { return !string.IsNullOrWhiteSpace(Unit); }
+    }
+
+    [DataContract(Name = "series", Namespace = ""), XmlType("series", Namespace = "")]
+    public class GeckoBarChartSeries
+    {
+        [DataMember(Name = "data", IsRequired = true), XmlElement("data"), JsonProperty("data")]
+        public List<int> Data { get; set; }
+        public bool ShouldSerializeData() { return (Data != null) && (Data.Count > 0); }
+    }
+
+    /// <summary>
+    /// Custom Widget
+    /// </summary>
+    [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
+    public class GeckoBarChart
+    {
+        [DataMember(Name = "x_axis", IsRequired = false), XmlElement("x_axis"), JsonProperty("x_axis")]
+        public GeckoBarChartXAxis XAxis { get; set; }
+        public bool ShouldSerializeXAxis() { return (XAxis != null); }
+
+        [DataMember(Name = "y_axis", IsRequired = false), XmlElement("y_axis"), JsonProperty("y_axis")]
+        public GeckoBarChartYAxis YAxis { get; set; }
+        public bool ShouldSerializeYAxis() { return (YAxis != null); }
+
+        [DataMember(Name = "series", IsRequired = true), XmlElement("series"), JsonProperty("series")]
+        public List<GeckoBarChartSeries> Series { get; set; }
+        public bool ShouldSerializeSeries() { return (Series != null) && (Series.Count > 0); }
     }
     #endregion
 
