@@ -630,6 +630,33 @@ namespace Geckonet.Core.Models
     }
     #endregion
 
+    #region Leaderboard
+    [DataContract(Name = "item", Namespace = ""), XmlType("item", Namespace = "")]
+    public class GeckoLeaderboardItem
+    {
+        [DataMember(Name = "label", IsRequired = true), XmlElement("label"), JsonProperty("label")]
+        public string Label { get; set; }
+        public bool ShouldSerializeLabel() { return !string.IsNullOrEmpty(Label); }
+
+        [DataMember(Name = "value", IsRequired = true), XmlElement("value"), JsonProperty("value")]
+        public int Value { get; set; }
+
+        [DataMember(Name = "previous_rank", IsRequired = true), XmlElement("previous_rank"), JsonProperty("previous_rank")]
+        public int PreviousRank { get; set; }
+    }
+
+    /// <summary>
+    /// Custom Widget
+    /// </summary>
+    [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
+    public class GeckoLeaderboard
+    {
+        [DataMember(Name = "items", IsRequired = true), XmlElement("items"), JsonProperty("items")]
+        public List<GeckoLeaderboardItem> Items { get; set; }
+        public bool ShouldSerializeItems() { return (Items != null) && (Items.Count > 0); }
+    }
+    #endregion
+
     #region Push
     public class PushPayload<T>
     {
