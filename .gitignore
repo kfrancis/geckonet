@@ -149,3 +149,4 @@ $RECYCLE.BIN/
 /.nuget/NuGet.exe
 *.nupkg
 *.bat
+.vs/
