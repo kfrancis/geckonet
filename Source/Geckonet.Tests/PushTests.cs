@@ -110,7 +110,7 @@ namespace Geckonet.Tests
                             Start = "0"
                         }
                     },
-                    Range = new System.Collections.Generic.List<GeckoBulletRangeItem>() { 
+                    Range = new System.Collections.Generic.List<GeckoBulletRangeItem>() {
                         new GeckoBulletRangeItem(){ Color = "red", End = 125, Start = 0},
                         new GeckoBulletRangeItem(){ Color = "amber", End = 200, Start = 126},
                         new GeckoBulletRangeItem(){ Color = "green", End = 250, Start = 201}
@@ -144,7 +144,8 @@ namespace Geckonet.Tests
             // Arrange           
             Random.Org.Random rand = new Random.Org.Random();
             var widgetKey = "<widget key here>";        // replace this value with your own
-            var obj = new GeckoMonitoring() {
+            var obj = new GeckoMonitoring()
+            {
                 Status = rand.Next(1, 2) % 2 == 1 ? MonitoringStatus.Up : MonitoringStatus.Down,
                 Downtime = DateTime.Now.AddDays(rand.Next(1, 60)).Humanize(),
                 ResponseTime = string.Format("{0} ms", rand.Next(1, 1000))
@@ -173,7 +174,8 @@ namespace Geckonet.Tests
         {
             // Arrange           
             var widgetKey = "<widget key here>";        // replace this value with your own
-            var obj = new NumberAndSecondaryStat() {
+            var obj = new NumberAndSecondaryStat()
+            {
                 DataItems = new DataItem[] {
                     new DataItem() { Text = "Visitors", Value = 4223 } ,
                     new DataItem() { Text = string.Empty, Value = 238 }
@@ -202,7 +204,8 @@ namespace Geckonet.Tests
         public void Can_Serialize_Push_Payload()
         {
             // Arrange
-            var obj = new NumberAndSecondaryStat() {
+            var obj = new NumberAndSecondaryStat()
+            {
                 DataItems = new DataItem[] {
                     new DataItem() { Text = "Visitors", Value = 4223 } ,
                     new DataItem() { Text = string.Empty, Value = 238 }
@@ -221,6 +224,39 @@ namespace Geckonet.Tests
             // Assert
             Assert.IsNotNull(result);
             Assert.IsTrue(!string.IsNullOrWhiteSpace(result));
+        }
+
+        [TestMethod]
+        public void Can_See_Error_Messages()
+        {
+            // Arrange
+            try
+            {
+                var client = new GeckoConnect();
+                var obj = new NumberAndSecondaryStat()
+                {
+                    DataItems = new DataItem[] {
+                    new DataItem() { Text = "Visitors", Value = 4223 } ,
+                    new DataItem() { Text = string.Empty, Value = 238 }
+                }
+                };
+
+                var push = new PushPayload<NumberAndSecondaryStat>()
+                {
+                    ApiKey = Guid.NewGuid().ToString(),
+                    Data = obj
+                };
+
+                // Act
+                var result = client.Push<NumberAndSecondaryStat>(push, Guid.NewGuid().ToString());
+            }
+            catch (GeckoException gEx)
+            {
+                // Assert
+                Assert.IsNotNull(gEx);
+                Assert.IsNotNull(gEx.ErrorContent);
+                Assert.IsTrue(!string.IsNullOrEmpty(gEx.ErrorContent.Error) || !string.IsNullOrEmpty(gEx.ErrorContent.Message));
+            }
         }
     }
 }

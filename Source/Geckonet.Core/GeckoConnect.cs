@@ -71,20 +71,36 @@ using Newtonsoft.Json;
 
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                throw new GeckoException(response.StatusDescription);
+                throw new GeckoException(response.StatusDescription, response.Content);
             }
 
             return response.Data;
         }
     }
+
+    public class GeckoExceptionContent
+    {
+        [JsonProperty("message")]
+        public string Message { get; set; }
+
+        [JsonProperty("error")]
+        public string Error { get; set; }
+    }
  
     public class GeckoException : Exception
     {
-        private string s;
+        public string Status { get; private set; }
+        public GeckoExceptionContent ErrorContent { get; private set; }
 
-        public GeckoException(string s)
+        public GeckoException(string status)
+            : this(status, null)
         {
-            this.s = s;
+        }
+
+        public GeckoException(string status, string json)
+        {
+            this.Status = status;
+            this.ErrorContent = JsonConvert.DeserializeObject<GeckoExceptionContent>(json);
         }
     }
  
