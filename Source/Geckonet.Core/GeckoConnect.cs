@@ -56,6 +56,13 @@ using Newtonsoft.Json;
             }
         }
 
+        /// <summary>
+        /// Push it!
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="payload"></param>
+        /// <param name="widgetKey"></param>
+        /// <returns></returns>
         public PushResult Push<T>(PushPayload<T> payload, string widgetKey)
         {
             var client = new RestClient("https://push.geckoboard.com");

@@ -10,4 +10,7 @@
     <copyright>Copyright 2013</copyright>
     <tags>Geckoboard Gecko</tags>
   </metadata>
+  <files>
+    <file src="bin\$configuration$\Geckonet.Core.pdb" target="lib\net45\" />
+  </files>
 </package>
