@@ -476,7 +476,7 @@ namespace Geckonet.Core.Models
     public class GeckoMeterChart
     {
         [DataMember(Name = "item", IsRequired = false), XmlElement("item"), JsonProperty("item")]
-        public int? Item { get; set; }
+        public decimal? Item { get; set; }
         public bool ShouldSerializeItem() { return Item.HasValue; }
 
         [DataMember(Name = "min", IsRequired = false), XmlElement("min"), JsonProperty("min")]
@@ -486,6 +486,10 @@ namespace Geckonet.Core.Models
         [DataMember(Name = "max", IsRequired = false), XmlElement("max"), JsonProperty("max")]
         public DataItem Max { get; set; }
         public bool ShouldSerializeMax() { return Max != null; }
+        
+        [DataMember(Name = "format", IsRequired = false), XmlElement("format"), JsonProperty("format")]
+        public string Format { get; set; }
+        public bool ShouldSerializeFormat() { return !string.IsNullOrEmpty(Format); }
     }
     #endregion
 

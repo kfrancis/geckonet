@@ -227,6 +227,37 @@ namespace Geckonet.Tests
         }
 
         [TestMethod]
+        public void Live_Push_Geckometer()
+        {
+            // Arrange           
+            var widgetKey = "<widget key here>";        // replace this value with your own
+            var obj = new GeckoMeterChart()
+            {
+                Item = 0.9m,
+                Format = "percent",
+                Min = new DataItem() { Text = "Min", Value = 0.0m },
+                Max = new DataItem() { Text = "Max", Value = 1.0m }
+            };
+
+            var push = new PushPayload<GeckoMeterChart>()
+            {
+                ApiKey = this.apiKey,
+                Data = obj
+            };
+            var client = new GeckoConnect();
+
+            // Act
+            Assert.AreNotEqual("<api key here>", this.apiKey);
+            Assert.AreNotEqual("<widget key here>", widgetKey);
+            var result = client.Push<GeckoMeterChart>(push, widgetKey);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Success);
+            Assert.IsTrue(string.IsNullOrWhiteSpace(result.Message));
+        }
+
+        [TestMethod]
         public void Can_See_Error_Messages()
         {
             // Arrange
