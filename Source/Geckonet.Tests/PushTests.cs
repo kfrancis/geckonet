@@ -201,32 +201,6 @@ namespace Geckonet.Tests
         }
 
         [TestMethod]
-        public void Can_Serialize_Push_Payload()
-        {
-            // Arrange
-            var obj = new NumberAndSecondaryStat()
-            {
-                DataItems = new DataItem[] {
-                    new DataItem() { Text = "Visitors", Value = 4223 } ,
-                    new DataItem() { Text = string.Empty, Value = 238 }
-                }
-            };
-
-            var push = new PushPayload<NumberAndSecondaryStat>()
-            {
-                ApiKey = Guid.NewGuid().ToString(),
-                Data = obj
-            };
-
-            // Act
-            var result = JsonConvert.SerializeObject(push, Formatting.Indented);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.IsTrue(!string.IsNullOrWhiteSpace(result));
-        }
-
-        [TestMethod]
         public void Live_Push_Geckometer()
         {
             // Arrange           
@@ -285,8 +259,8 @@ namespace Geckonet.Tests
             {
                 // Assert
                 Assert.IsNotNull(gEx);
-                Assert.IsNotNull(gEx.ErrorContent);
-                Assert.IsTrue(!string.IsNullOrEmpty(gEx.ErrorContent.Error) || !string.IsNullOrEmpty(gEx.ErrorContent.Message));
+                Assert.IsNotNull(gEx.PushErrorContent);
+                Assert.IsTrue(!string.IsNullOrEmpty(gEx.PushErrorContent.Error) || !string.IsNullOrEmpty(gEx.PushErrorContent.Message));
             }
         }
     }

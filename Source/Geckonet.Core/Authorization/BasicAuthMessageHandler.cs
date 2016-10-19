@@ -6,7 +6,6 @@ using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
-using System.Web;
 
 namespace Geckonet.Core.Authorization
 {

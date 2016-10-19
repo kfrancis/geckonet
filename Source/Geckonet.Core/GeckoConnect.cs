@@ -1,4 +1,5 @@
-﻿#region License, Terms and Conditions
+﻿
+#region License, Terms and Conditions
 //
 // GeckoConnect.cs
 //
@@ -26,35 +27,29 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 #endregion
+
 namespace Geckonet.Core
 {
     #region Imports
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Geckonet.Core.Models;
-    using Geckonet.Core.Serialization;
+    using Models;
+    using Serialization;
     using RestSharp;
-using Newtonsoft.Json;
-
+    using RestSharp.Authenticators;
     #endregion
 
+    /// <summary>
+    /// A comprehensive C# API wrapper library for accessing Geckoboard.com, using XML or JSON to read/write widget data easily using strong-typed models.
+    /// </summary>
     public class GeckoConnect
     {
         private static string _userAgent;
-        private static string UserAgent
-        {
-            get
-            {
-                if (_userAgent == null)
-                {
-                    _userAgent = String.Format("Geckonet .NET RestSharp Client v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
-                }
-                return _userAgent;
-            }
-        }
+
+        private static string UserAgent => _userAgent ??
+                                   (_userAgent =
+                                       string.Format("Geckonet .NET RestSharp Client v" +
+                                                     System.Reflection.Assembly.GetExecutingAssembly().GetName().Version));
 
         /// <summary>
         /// Push it!
@@ -65,15 +60,13 @@ using Newtonsoft.Json;
         /// <returns></returns>
         public PushResult Push<T>(PushPayload<T> payload, string widgetKey)
         {
-            var client = new RestClient("https://push.geckoboard.com");
-            client.UserAgent = GeckoConnect.UserAgent;
+            var client = new RestClient("https://push.geckoboard.com") { UserAgent = UserAgent };
 
-            var request = new RestRequest(string.Format("v1/send/{0}", widgetKey), Method.POST);
-            request.RequestFormat = DataFormat.Json;
+            var request = new RestRequest($"v1/send/{widgetKey}", Method.POST) { RequestFormat = DataFormat.Json };
             request.AddHeader("Content-Type", "application/json");
             request.JsonSerializer = new RestSharpJsonNetSerializer();
             request.AddParameter("application/json", request.JsonSerializer.Serialize(payload), ParameterType.RequestBody);
-            
+
             var response = client.Execute<PushResult>(request);
 
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
@@ -83,40 +76,132 @@ using Newtonsoft.Json;
 
             return response.Data;
         }
-    }
 
-    public class GeckoExceptionContent
-    {
-        [JsonProperty("message")]
-        public string Message { get; set; }
-
-        [JsonProperty("error")]
-        public string Error { get; set; }
-    }
- 
-    public class GeckoException : Exception
-    {
-        public string Status { get; private set; }
-        public GeckoExceptionContent ErrorContent { get; private set; }
-
-        public GeckoException(string status)
-            : this(status, null)
+        /// <summary>
+        /// Allows the replacement of data in a dataset
+        /// </summary>
+        /// <param name="payload">The dataset to send</param>
+        /// <param name="name">The name of the dataset</param>
+        /// <param name="apiKey">The api key</param>
+        /// <returns>True if successful, throws GeckoException otherwise.</returns>
+        public bool UpdateDataset(GeckoDataset payload, string name, string apiKey)
         {
+            var client = new RestClient("https://api.geckoboard.com")
+            {
+                Authenticator = new HttpBasicAuthenticator(apiKey, string.Empty),
+                UserAgent = UserAgent
+            };
+
+            var request = new RestRequest($"datasets/{name}/data", Method.PUT)
+            {
+                RequestFormat = DataFormat.Json
+            };
+            request.AddHeader("Content-Type", "application/json");
+            request.JsonSerializer = new RestSharpJsonNetSerializer();
+            request.AddParameter("application/json", request.JsonSerializer.Serialize(payload), ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new GeckoException(response.StatusDescription, response.Content);
+            }
+
+            return true;
         }
 
-        public GeckoException(string status, string json)
+        /// <summary>
+        /// Deletes a dataset
+        /// </summary>
+        /// <param name="name">The name of the dataset to delete</param>
+        /// <param name="apiKey">The api key</param>
+        /// <returns>True if successful, </returns>
+        public bool DeleteDataset(string name, string apiKey)
         {
-            this.Status = status;
-            this.ErrorContent = JsonConvert.DeserializeObject<GeckoExceptionContent>(json);
-        }
-    }
- 
-    public class PushResult
-    {
-        [JsonProperty("success")]
-        public bool Success { get; set; }
+            var client = new RestClient("https://api.geckoboard.com")
+            {
+                Authenticator = new HttpBasicAuthenticator(apiKey, string.Empty),
+                UserAgent = UserAgent
+            };
 
-        [JsonProperty("message")]
-        public string Message { get; set; }
+            var request = new RestRequest($"datasets/{name}", Method.DELETE)
+            {
+                RequestFormat = DataFormat.Json
+            };
+
+            var response = client.Execute(request);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new GeckoException(response.StatusDescription, response.Content);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Appending data to a dataset
+        /// </summary>
+        /// <param name="payload">The dataset payload</param>
+        /// <param name="name">The name of the dataset</param>
+        /// <param name="apiKey">The api key</param>
+        /// <returns>True if successful</returns>
+        /// <exception cref="GeckoException">Thrown if response status is not 200 OK</exception>
+        public bool AppendDataset(GeckoDataset payload, string name, string apiKey)
+        {
+            var client = new RestClient("https://api.geckoboard.com")
+            {
+                Authenticator = new HttpBasicAuthenticator(apiKey, string.Empty),
+                UserAgent = UserAgent
+            };
+
+            var request = new RestRequest($"datasets/{name}/data", Method.POST) { RequestFormat = DataFormat.Json };
+            request.AddHeader("Content-Type", "application/json");
+            request.JsonSerializer = new RestSharpJsonNetSerializer();
+            request.AddParameter("application/json", request.JsonSerializer.Serialize(payload), ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new GeckoException(response.StatusDescription, response.Content);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Create a dataset
+        /// </summary>
+        /// <param name="payload">The dataset payload</param>
+        /// <param name="name">The name of the dataset</param>
+        /// <param name="apiKey">The api key</param>
+        /// <returns>The dataset result, if applicable.</returns>
+        /// <exception cref="GeckoException">Thrown if response status is not 201 CREATED</exception>
+        public GeckoDatasetResult CreateDataset(GeckoDataset payload, string name, string apiKey)
+        {
+            var client = new RestClient("https://api.geckoboard.com")
+            {
+                Authenticator = new HttpBasicAuthenticator(apiKey, string.Empty),
+                UserAgent = UserAgent
+            };
+
+            var request = new RestRequest($"datasets/{name}", Method.PUT)
+            {
+                RequestFormat = DataFormat.Json
+            };
+            request.AddHeader("Content-Type", "application/json");
+            request.JsonSerializer = new RestSharpJsonNetSerializer();
+            request.AddParameter("application/json", request.JsonSerializer.Serialize(payload), ParameterType.RequestBody);
+
+            var response = client.Execute<GeckoDatasetResult>(request);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.Created)
+            {
+                throw new GeckoException(response.StatusDescription, response.Content);
+            }
+
+            return response.Data;
+        }
     }
 }
