@@ -1284,16 +1284,8 @@ namespace Geckonet.Core.Models
     /// Gecko list
     /// </summary>
     [DataContract(Namespace = ""), XmlRoot("root", Namespace = "")]
-    public class GeckoList
+    public class GeckoList : List<DataListItem>
     {
-        /// <summary>
-        /// Items
-        /// </summary>
-        [DataMember(Name = "item", IsRequired = false), XmlElement("item"), JsonProperty("item")]
-        public List<DataListItem> Items { get; set; }
-#pragma warning disable 1591
-        public bool ShouldSerializeItems() { return (Items != null) && (Items.Count > 0); }
-#pragma warning restore 1591
     }
 
     /// <summary>

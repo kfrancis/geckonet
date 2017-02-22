@@ -1,7 +1,7 @@
 @using System.Web.Http
 @using Geckonet.Sample.Areas.HelpPage.Models
 @model HelpPageApiModel
-           
+
 @{
     var description = Model.ApiDescription;
     ViewBag.Title = description.HttpMethod.Method + " " + description.RelativePath;
@@ -11,7 +11,7 @@
     <section class="featured">
         <div class="content-wrapper">
             <p>
-                @Html.ActionLink("Help Page Home", "Index")             
+                @Html.ActionLink("Help Page Home", "Index")
             </p>
         </div>
     </section>
