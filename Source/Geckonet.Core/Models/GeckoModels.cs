@@ -859,6 +859,15 @@ namespace Geckonet.Core.Models
 #pragma warning disable 1591
         public bool ShouldSerializeData() { return (Data != null) && (Data.Count > 0); }
 #pragma warning restore 1591
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        [DataMember(Name = "name", IsRequired = false), XmlElement("name"), JsonProperty("name")]
+        public string Name { get; set; }
+#pragma warning disable 1591
+        public bool ShouldSerializeName() { return !string.IsNullOrWhiteSpace(Name); }
+#pragma warning restore 1591
     }
 
     /// <summary>
