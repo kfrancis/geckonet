@@ -9,15 +9,20 @@ using Humanizer;
 namespace Geckonet.Tests
 {
     [TestClass]
-    public class PushTests
+    public class PushTests : TestBase
     {
-        private readonly string apiKey = "<api key here>";  // replace this value with your own
+        private string _apiKey;  // replace this value with your own
+
+        public PushTests()
+        {
+            _apiKey = APIKEY;
+        }
 
         [TestMethod]
         public void Live_Push_BarChart()
         {
             // Arrange            
-            var widgetKey = "<widget key here>";        // replace this value with your own
+            var widgetKey = BARCHART_WIDGETKEY;        // replace this value with your own
             var obj = new GeckoBarChart()
             {
                 XAxis = new GeckoBarChartXAxis()
@@ -39,14 +44,14 @@ namespace Geckonet.Tests
 
             var push = new PushPayload<GeckoBarChart>()
             {
-                ApiKey = this.apiKey,
+                ApiKey = _apiKey,
                 Data = obj
             };
             var client = new GeckoConnect();
             var json = JsonConvert.SerializeObject(push, Formatting.Indented);  // Just for curiosity sake
 
             // Act
-            Assert.AreNotEqual("<api key here>", this.apiKey);
+            Assert.AreNotEqual("<api key here>", _apiKey);
             Assert.AreNotEqual("<widget key here>", widgetKey);
             var result = client.Push<GeckoBarChart>(push, widgetKey);
 
@@ -60,7 +65,7 @@ namespace Geckonet.Tests
         public void Live_Push_RagNumbers()
         {
             // Arrange            
-            var widgetKey = "<widget key here>";        // replace this value with your own
+            var widgetKey = RAGNUMBERS_WIDGETKEY;        // replace this value with your own
             var obj = new GeckoItems()
             {
                 DataItems = new DataItem[3] {
@@ -72,14 +77,14 @@ namespace Geckonet.Tests
 
             var push = new PushPayload<GeckoItems>()
             {
-                ApiKey = this.apiKey,
+                ApiKey = _apiKey,
                 Data = obj
             };
             var client = new GeckoConnect();
             var json = JsonConvert.SerializeObject(push, Formatting.Indented);  // Just for curiosity sake
 
             // Act
-            Assert.AreNotEqual("<api key here>", this.apiKey);
+            Assert.AreNotEqual("<api key here>", _apiKey);
             Assert.AreNotEqual("<widget key here>", widgetKey);
             var result = client.Push<GeckoItems>(push, widgetKey);
 
@@ -93,7 +98,7 @@ namespace Geckonet.Tests
         public void Live_Push_Bullet()
         {
             // Arrange            
-            var widgetKey = "<widget key here>";        // replace this value with your own
+            var widgetKey = BULLET_WIDGETKEY;        // replace this value with your own
             var obj = new GeckoBulletChart()
             {
                 Orientation = "horizontal",
@@ -121,14 +126,14 @@ namespace Geckonet.Tests
 
             var push = new PushPayload<GeckoBulletChart>()
             {
-                ApiKey = this.apiKey,
+                ApiKey = _apiKey,
                 Data = obj
             };
             var client = new GeckoConnect();
             var json = JsonConvert.SerializeObject(push, Formatting.Indented);  // Just for curiosity sake
 
             // Act
-            Assert.AreNotEqual("<api key here>", this.apiKey);
+            Assert.AreNotEqual("<api key here>", _apiKey);
             Assert.AreNotEqual("<widget key here>", widgetKey);
             var result = client.Push<GeckoBulletChart>(push, widgetKey);
 
@@ -143,7 +148,7 @@ namespace Geckonet.Tests
         {
             // Arrange           
             Random.Org.Random rand = new Random.Org.Random();
-            var widgetKey = "<widget key here>";        // replace this value with your own
+            var widgetKey = MONITORING_WIDGETKEY;        // replace this value with your own
             var obj = new GeckoMonitoring()
             {
                 Status = rand.Next(1, 2) % 2 == 1 ? MonitoringStatus.Up : MonitoringStatus.Down,
@@ -153,13 +158,13 @@ namespace Geckonet.Tests
 
             var push = new PushPayload<GeckoMonitoring>()
             {
-                ApiKey = this.apiKey,
+                ApiKey = _apiKey,
                 Data = obj
             };
             var client = new GeckoConnect();
 
             // Act
-            Assert.AreNotEqual("<api key here>", this.apiKey);
+            Assert.AreNotEqual("<api key here>", _apiKey);
             Assert.AreNotEqual("<widget key here>", widgetKey);
             var result = client.Push<GeckoMonitoring>(push, widgetKey);
 
@@ -173,7 +178,7 @@ namespace Geckonet.Tests
         public void Live_Push_NumberAndSecondaryStat()
         {
             // Arrange           
-            var widgetKey = "<widget key here>";        // replace this value with your own
+            var widgetKey = NUMBERANDSTAT_WIDGETKEY;        // replace this value with your own
             var obj = new NumberAndSecondaryStat()
             {
                 DataItems = new DataItem[] {
@@ -184,13 +189,13 @@ namespace Geckonet.Tests
 
             var push = new PushPayload<NumberAndSecondaryStat>()
             {
-                ApiKey = this.apiKey,
+                ApiKey = _apiKey,
                 Data = obj
             };
             var client = new GeckoConnect();
 
             // Act
-            Assert.AreNotEqual("<api key here>", this.apiKey);
+            Assert.AreNotEqual("<api key here>", _apiKey);
             Assert.AreNotEqual("<widget key here>", widgetKey);
             var result = client.Push<NumberAndSecondaryStat>(push, widgetKey);
 
@@ -204,7 +209,7 @@ namespace Geckonet.Tests
         public void Live_Push_Geckometer()
         {
             // Arrange           
-            var widgetKey = "<widget key here>";        // replace this value with your own
+            var widgetKey = GECKOMETER_WIDGETKEY;        // replace this value with your own
             var obj = new GeckoMeterChart()
             {
                 Item = 0.9m,
@@ -215,13 +220,13 @@ namespace Geckonet.Tests
 
             var push = new PushPayload<GeckoMeterChart>()
             {
-                ApiKey = this.apiKey,
+                ApiKey = _apiKey,
                 Data = obj
             };
             var client = new GeckoConnect();
 
             // Act
-            Assert.AreNotEqual("<api key here>", this.apiKey);
+            Assert.AreNotEqual("<api key here>", _apiKey);
             Assert.AreNotEqual("<widget key here>", widgetKey);
             var result = client.Push<GeckoMeterChart>(push, widgetKey);
 

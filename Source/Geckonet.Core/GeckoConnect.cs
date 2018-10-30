@@ -40,7 +40,7 @@ namespace Geckonet.Core
     #endregion
 
     /// <summary>
-    /// A comprehensive C# API wrapper library for accessing Geckoboard.com, using XML or JSON to read/write widget data easily using strong-typed models.
+    /// A comprehensive C# API wrapper library for accessing Geckoboard.com, using XML or JSON to read/write widget data easily using strong-typed models. test
     /// </summary>
     public class GeckoConnect
     {

@@ -62,13 +62,25 @@ namespace Geckonet.Core.Models
         public bool ShouldSerializeCurrencyCode() { return !string.IsNullOrEmpty(CurrencyCode); }
     }
 
+    [DataContract]
     public enum DatasetFieldType
     {
-        date,
-        datetime,
-        number,
-        percentage,
-        @string,
-        money
+        [EnumMember(Value = "date")]
+        Date,
+
+        [EnumMember(Value = "datetime")]
+        DateTime,
+
+        [EnumMember(Value = "number")]
+        Number,
+
+        [EnumMember(Value = "percentage")]
+        Percentage,
+
+        [EnumMember(Value = "string")]
+        String,
+
+        [EnumMember(Value = "money")]
+        Money
     }
 }

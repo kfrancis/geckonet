@@ -57,8 +57,8 @@ namespace Geckonet.Tests
             {
                 Fields = new Dictionary<string, IDatasetField>()
                 {
-                    {"amount", new DatasetField(DatasetFieldType.number, "Amount")},
-                    {"timestamp", new DatasetField(DatasetFieldType.datetime, "Date")}
+                    {"amount", new DatasetField(DatasetFieldType.Number, "Amount")},
+                    {"timestamp", new DatasetField(DatasetFieldType.DateTime, "Date")}
                 },
                 UniqueBy = new List<string>() { "timestamp" }
             };

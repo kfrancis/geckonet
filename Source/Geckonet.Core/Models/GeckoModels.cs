@@ -88,15 +88,18 @@ namespace Geckonet.Core.Models
     /// <summary>
     /// Is the item being monitored up or down?
     /// </summary>
+    [DataContract]
     public enum MonitoringStatus
     {
         /// <summary>
         /// The item/service is "up"
         /// </summary>
+        [EnumMember(Value = "up")]
         Up,
         /// <summary>
         /// The item/service is "down"
         /// </summary>
+        [EnumMember(Value = "down")]
         Down
     }
 

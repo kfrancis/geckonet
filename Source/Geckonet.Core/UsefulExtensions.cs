@@ -69,15 +69,15 @@ namespace Geckonet.Core
         {
             if (columnType == typeof(short) || columnType == typeof(int) || columnType == typeof(long) || columnType == typeof(double) || columnType == typeof(decimal) || columnType == typeof(float))
             {
-                return DatasetFieldType.number;
+                return DatasetFieldType.Number;
             }
             else if (columnType == typeof(DateTime))
             {
-                return DatasetFieldType.datetime;
+                return DatasetFieldType.DateTime;
             }
             else
             {
-                return DatasetFieldType.@string;
+                return DatasetFieldType.String;
             }
         }
     }

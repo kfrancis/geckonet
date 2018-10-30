@@ -8,9 +8,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Geckonet.Tests
 {
     [TestClass]
-    public class DatasetTests
+    public class DatasetTests : TestBase
     {
-        private readonly string apiKey = "<api key here>"; // replace this value with your own
+        private string _apiKey; // replace this value with your own
+
+        public DatasetTests()
+        {
+            _apiKey = APIKEY;
+        }
 
         [TestMethod]
         public void Live_Create_Dataset()
@@ -21,16 +26,16 @@ namespace Geckonet.Tests
             {
                 Fields = new Dictionary<string, IDatasetField>()
                 {
-                    {"amount", new DatasetField(DatasetFieldType.number, "Amount")},
-                    {"timestamp", new DatasetField(DatasetFieldType.datetime, "Date")}
+                    {"amount", new DatasetField(DatasetFieldType.Number, "Amount")},
+                    {"timestamp", new DatasetField(DatasetFieldType.DateTime, "Date")}
                 },
                 UniqueBy = new List<string>() { "timestamp" }
             };
             var datasetName = $"test_{Guid.NewGuid().ToString()}";
 
             // Act
-            Assert.AreNotEqual("<api key here>", this.apiKey);
-            var result = client.CreateDataset(obj, datasetName, this.apiKey);
+            Assert.AreNotEqual("<api key here>", _apiKey);
+            var result = client.CreateDataset(obj, datasetName, _apiKey);
 
             // Assert
             Assert.IsNotNull(result);
@@ -38,7 +43,7 @@ namespace Geckonet.Tests
             Assert.IsTrue(DateTime.Now > result.CreatedAt);
             Assert.IsTrue(DateTime.Now > result.UpdatedAt);
 
-            client.DeleteDataset(datasetName, this.apiKey);
+            client.DeleteDataset(datasetName, _apiKey);
         }
 
         [TestMethod]
@@ -49,10 +54,10 @@ namespace Geckonet.Tests
             var datasetName = Guid.NewGuid().ToString();
 
             // Act
-            Assert.AreNotEqual("<api key here>", this.apiKey);
+            Assert.AreNotEqual("<api key here>", _apiKey);
             try
             {
-                var result = client.DeleteDataset(datasetName, this.apiKey);
+                var result = client.DeleteDataset(datasetName, _apiKey);
                 Assert.Fail("Expected an exception");
             }
             catch (GeckoException geckoException)
@@ -71,15 +76,15 @@ namespace Geckonet.Tests
             {
                 Fields = new Dictionary<string, IDatasetField>()
                 {
-                    {"amount", new DatasetField(DatasetFieldType.number, "Amount")},
-                    {"timestamp", new DatasetField(DatasetFieldType.datetime, "Date")}
+                    {"amount", new DatasetField(DatasetFieldType.Number, "Amount")},
+                    {"timestamp", new DatasetField(DatasetFieldType.DateTime, "Date")}
                 },
                 UniqueBy = new List<string>() { "timestamp" }
             };
             var datasetName = $"test_{Guid.NewGuid().ToString()}";
 
             // Act
-            var result = client.CreateDataset(obj, datasetName, this.apiKey);
+            var result = client.CreateDataset(obj, datasetName, _apiKey);
 
             var obj2 = new GeckoDataset()
             {
@@ -104,13 +109,13 @@ namespace Geckonet.Tests
             };
 
             // Act
-            Assert.AreNotEqual("<api key here>", this.apiKey);
-            var result2 = client.UpdateDataset(obj2, datasetName, this.apiKey);
+            Assert.AreNotEqual("<api key here>", _apiKey);
+            var result2 = client.UpdateDataset(obj2, datasetName, _apiKey);
 
             // Assert
             Assert.IsNotNull(result);
 
-            client.DeleteDataset(datasetName, apiKey);
+            client.DeleteDataset(datasetName, _apiKey);
         }
     }
 }
