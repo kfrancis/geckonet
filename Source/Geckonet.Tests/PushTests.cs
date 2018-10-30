@@ -93,7 +93,7 @@ namespace Geckonet.Tests
         public void Live_Push_Bullet()
         {
             // Arrange            
-            var widgetKey = "<api widget here>";        // replace this value with your own
+            var widgetKey = "<widget key here>";        // replace this value with your own
             var obj = new GeckoBulletChart()
             {
                 Orientation = "horizontal",

@@ -66,7 +66,22 @@ namespace Geckonet.Tests
         {
             // Arrange
             var client = new GeckoConnect();
+
             var obj = new GeckoDataset()
+            {
+                Fields = new Dictionary<string, IDatasetField>()
+                {
+                    {"amount", new DatasetField(DatasetFieldType.number, "Amount")},
+                    {"timestamp", new DatasetField(DatasetFieldType.datetime, "Date")}
+                },
+                UniqueBy = new List<string>() { "timestamp" }
+            };
+            var datasetName = $"test_{Guid.NewGuid().ToString()}";
+
+            // Act
+            var result = client.CreateDataset(obj, datasetName, this.apiKey);
+
+            var obj2 = new GeckoDataset()
             {
                 Data = new List<Dictionary<string, object>>()
                 {
@@ -87,14 +102,15 @@ namespace Geckonet.Tests
                     }
                 }
             };
-            var datasetName = "test";
 
             // Act
             Assert.AreNotEqual("<api key here>", this.apiKey);
-            var result = client.UpdateDataset(obj, datasetName, this.apiKey);
+            var result2 = client.UpdateDataset(obj2, datasetName, this.apiKey);
 
             // Assert
             Assert.IsNotNull(result);
+
+            client.DeleteDataset(datasetName, apiKey);
         }
     }
 }

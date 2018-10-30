@@ -23,11 +23,10 @@ namespace Geckonet.Core.Authorization
             // Fix auth by query string apiKey value, which was the old method. Converts the query string to an AuthHeader value, then continues as normal.
             if (authValue == null)
             {
-                var collection = request.GetQueryNameValuePairs();
-                var requestQuery = collection.ToDictionary((keyItem) => keyItem.Key, (valueItem) => valueItem.Value);
+                var requestQuery = request.RequestUri.Query.Split('&').Select(p => p.Split('=')).ToDictionary(p => p[0], p => p[1]);
                 if (requestQuery.ContainsKey("apiKey"))
                 {
-                    var apiKeyValue = collection.FirstOrDefault(k => k.Key == "apiKey").Value;
+                    var apiKeyValue = requestQuery.FirstOrDefault(k => k.Key == "apiKey").Value;
                     authValue = AuthenticationHeaderValue.Parse(string.Format("Basic {0}", Convert.ToBase64String(Encoding.Default.GetBytes(string.Format("{0}:X", apiKeyValue)))));
                 }
             }
