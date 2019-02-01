@@ -203,5 +203,37 @@ namespace Geckonet.Core
 
             return response.Data;
         }
+
+        /// <summary>
+        /// Clears the dataset
+        /// </summary>
+        /// <param name="name">The name of the dataset</param>
+        /// <param name="apiKey">The api key</param>
+        /// <returns>True if successful, throws GeckoException otherwise.</returns>
+        public bool ClearDataset(string name, string apiKey)
+        {
+            var client = new RestClient("https://api.geckoboard.com")
+            {
+                Authenticator = new HttpBasicAuthenticator(apiKey, string.Empty),
+                UserAgent = UserAgent
+            };
+
+            var request = new RestRequest($"datasets/{name}/data", Method.PUT)
+            {
+                RequestFormat = DataFormat.Json
+            };
+            request.AddHeader("Content-Type", "application/json");
+            request.JsonSerializer = new RestSharpJsonNetSerializer();
+            request.AddParameter("application/json", request.JsonSerializer.Serialize(new { Data = new List<int>() }), ParameterType.RequestBody);
+
+            var response = client.Execute(request);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new GeckoException(response.StatusDescription, response.Content);
+            }
+
+            return true;
+        }
     }
 }

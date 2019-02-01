@@ -117,5 +117,35 @@ namespace Geckonet.Tests
 
             client.DeleteDataset(datasetName, _apiKey);
         }
+
+        [TestMethod]
+        public void Live_Clear_Data_In_Dataset()
+        {
+            // Arrange
+            var client = new GeckoConnect();
+
+            var obj = new GeckoDataset()
+            {
+                Fields = new Dictionary<string, IDatasetField>()
+                {
+                    {"amount", new DatasetField(DatasetFieldType.Number, "Amount")},
+                    {"timestamp", new DatasetField(DatasetFieldType.DateTime, "Date")}
+                },
+                UniqueBy = new List<string>() { "timestamp" }
+            };
+            var datasetName = $"test_{Guid.NewGuid().ToString()}";
+
+            // Act
+            Assert.AreNotEqual("<api key here>", _apiKey);
+
+            var result = client.CreateDataset(obj, datasetName, _apiKey);
+            var result2 = client.ClearDataset(datasetName, _apiKey);
+
+
+            // Assert
+            Assert.IsNotNull(result);
+
+            client.DeleteDataset(datasetName, _apiKey);
+        }
     }
 }
