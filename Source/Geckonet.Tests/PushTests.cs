@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Geckonet.Core;
 using Geckonet.Core.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Humanizer;
 
 namespace Geckonet.Tests
@@ -147,7 +147,7 @@ namespace Geckonet.Tests
         public void Live_Push_Monitoring()
         {
             // Arrange           
-            Random.Org.Random rand = new Random.Org.Random();
+            var rand = new Random();
             var widgetKey = MONITORING_WIDGETKEY;        // replace this value with your own
             var obj = new GeckoMonitoring()
             {
