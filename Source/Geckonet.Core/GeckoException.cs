@@ -3,26 +3,26 @@ using Newtonsoft.Json;
 
 namespace Geckonet.Core
 {
+    public class GeckoDatasetError
+    {
+        /// <summary>
+        /// The message
+        /// </summary>
+        [JsonProperty("message")]
+        public string Message { get; set; }
+    }
+
+    public class GeckoDatasetExceptionContent
+    {
+        [JsonProperty("error")]
+        public GeckoDatasetError Error { get; set; }
+    }
+
     /// <summary>
     /// An exception coming from Geckoboard
     /// </summary>
     public class GeckoException : Exception
     {
-        /// <summary>
-        /// The http status result
-        /// </summary>
-        public string Status { get; private set; }
-
-        /// <summary>
-        /// The content returned (error messages) from the failed push API call
-        /// </summary>
-        public GeckoPushExceptionContent PushErrorContent { get; private set; }
-
-        /// <summary>
-        /// The content returned (error messages) from the failed dataset API call
-        /// </summary>
-        public GeckoDatasetExceptionContent DatasetErrorContent { get; private set; }
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -57,21 +57,21 @@ namespace Geckonet.Core
                 // ignored
             }
         }
-    }
 
-    public class GeckoDatasetExceptionContent
-    {
-        [JsonProperty("error")]
-        public GeckoDatasetError Error { get; set; }
-    }
-
-    public class GeckoDatasetError
-    {
         /// <summary>
-        /// The message
+        /// The content returned (error messages) from the failed dataset API call
         /// </summary>
-        [JsonProperty("message")]
-        public string Message { get; set; }
+        public GeckoDatasetExceptionContent DatasetErrorContent { get; private set; }
+
+        /// <summary>
+        /// The content returned (error messages) from the failed push API call
+        /// </summary>
+        public GeckoPushExceptionContent PushErrorContent { get; private set; }
+
+        /// <summary>
+        /// The http status result
+        /// </summary>
+        public string Status { get; private set; }
     }
 
     /// <summary>
@@ -80,15 +80,15 @@ namespace Geckonet.Core
     public class GeckoPushExceptionContent
     {
         /// <summary>
-        /// The message
-        /// </summary>
-        [JsonProperty("message")]
-        public string Message { get; set; }
-
-        /// <summary>
         /// The error
         /// </summary>
         [JsonProperty("error")]
         public string Error { get; set; }
+
+        /// <summary>
+        /// The message
+        /// </summary>
+        [JsonProperty("message")]
+        public string Message { get; set; }
     }
 }

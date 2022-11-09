@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{347041D4-B75A-452B-A6B5-C592FED6B15E}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		global.json = global.json
 		.github\workflows\main.yml = .github\workflows\main.yml
 		NuGet.Config = NuGet.Config
 		README.md = README.md
@@ -14,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geckonet.Core", "Source\Geckonet.Core\Geckonet.Core.csproj", "{DB485697-593C-4A39-B141-CE83B2F21BAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geckonet.Tests", "Source\Geckonet.Tests\Geckonet.Tests.csproj", "{AFD85F3E-F617-4615-BB1D-055652E3BD45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Geckonet.Tests", "Source\Geckonet.Tests\Geckonet.Tests.csproj", "{AFD85F3E-F617-4615-BB1D-055652E3BD45}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geckonet.Sample", "Source\Geckonet.Sample\Geckonet.Sample.csproj", "{E9BA0468-62F7-4B89-8D5F-1A5E951C3AFD}"
 EndProject

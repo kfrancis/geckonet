@@ -224,7 +224,7 @@ csharp_indent_labels = flush_left
 
 # Prefer "var" everywhere
 csharp_style_var_for_built_in_types = true:suggestion
-csharp_style_var_when_type_is_apparent = false:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
 csharp_style_var_elsewhere = true:suggestion
 
 # Prefer method-like constructs to have a block body
@@ -275,6 +275,9 @@ csharp_preserve_single_line_statements = true
 
 # CS1591: Missing XML comment for publicly visible type or member
 dotnet_diagnostic.CS1591.severity = none
+
+# VSTHRD200: Use "Async" suffix for async methods
+dotnet_diagnostic.VSTHRD200.severity = none
 
 [src/CodeStyle/**.cs]
 # warning RS0005: Do not use generic CodeAction.Create to create CodeAction

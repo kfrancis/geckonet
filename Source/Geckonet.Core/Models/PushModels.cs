@@ -7,10 +7,10 @@ namespace Geckonet.Core.Models
     /// </summary>
     public class PushResult
     {
-        [JsonProperty("success")]
-        public bool Success { get; set; }
-
         [JsonProperty("message")]
         public string Message { get; set; }
+
+        [JsonProperty("success")]
+        public bool Success { get; set; }
     }
 }

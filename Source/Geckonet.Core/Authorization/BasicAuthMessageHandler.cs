@@ -9,16 +9,22 @@ using System.Threading;
 
 namespace Geckonet.Core.Authorization
 {
+    public interface IProvidePrincipal
+    {
+        IPrincipal CreatePrincipal(string apiKey, string apiPassword);
+    }
+
     public class BasicAuthMessageHandler : DelegatingHandler
     {
         private const string BasicAuthResponseHeader = "WWW-Authenticate";
         private const string BasicAuthResponseHeaderValue = "Basic";
         public IProvidePrincipal PrincipalProvider { get; set; }
+
         protected override System.Threading.Tasks.Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            AuthenticationHeaderValue authValue = request.Headers.Authorization;
+            var authValue = request.Headers.Authorization;
 
             // Fix auth by query string apiKey value, which was the old method. Converts the query string to an AuthHeader value, then continues as normal.
             if (authValue == null)
@@ -31,9 +37,9 @@ namespace Geckonet.Core.Authorization
                 }
             }
 
-            if (authValue != null && !String.IsNullOrWhiteSpace(authValue.Parameter))
+            if (authValue != null && !string.IsNullOrWhiteSpace(authValue.Parameter))
             {
-                Credentials parsedCredentials = ParseAuthorizationHeader(authValue.Parameter);
+                var parsedCredentials = ParseAuthorizationHeader(authValue.Parameter);
                 if (parsedCredentials != null)
                 {
                     Thread.CurrentPrincipal = PrincipalProvider
@@ -53,9 +59,10 @@ namespace Geckonet.Core.Authorization
                    return response;
                });
         }
+
         private Credentials ParseAuthorizationHeader(string authHeader)
         {
-            string[] credentials = Encoding.ASCII.GetString(Convert
+            var credentials = Encoding.ASCII.GetString(Convert
                                                             .FromBase64String(authHeader))
                                                             .Split(
                                                             new[] { ':' });
@@ -75,11 +82,6 @@ namespace Geckonet.Core.Authorization
         public string ApiPassword { get; set; }
     }
 
-    public interface IProvidePrincipal
-    {
-        IPrincipal CreatePrincipal(string apiKey, string apiPassword);
-    }
-
     /// <summary>
     /// This provider makes sure that the api key is a guid, and not empty
     /// </summary>
@@ -87,8 +89,7 @@ namespace Geckonet.Core.Authorization
     {
         public IPrincipal CreatePrincipal(string apiKey, string apiPassword)
         {
-            Guid apiKeyGuid = Guid.Empty;
-            bool result = Guid.TryParse(apiKey, out apiKeyGuid);
+            var result = Guid.TryParse(apiKey, out _);
             if (result == false || string.IsNullOrWhiteSpace(apiPassword))
             {
                 return null;
