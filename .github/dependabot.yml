@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "nuget" # See documentation for possible values
-    directory: "/" # Location of package manifests
+    directory: "/Source/Geckonet.Core" # Location of package manifests
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
