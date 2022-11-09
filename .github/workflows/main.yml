@@ -9,9 +9,6 @@ on:
   push:
     branches: [ master ]
 
-env:
-  DOTNET_VERSION: '5.0.401'
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -23,14 +20,14 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: 🛒 Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
 
-      - name: ⚙️ Setup dotnet 5.0.x
-        uses: actions/setup-dotnet@v1
+      - name: ⚙️ Setup dotnet sdk
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          global-json-file: global.json
 
       - name: ⚙️ Setup GIT versioning
         uses: dotnet/nbgv@v0.4.0
@@ -49,13 +46,27 @@ jobs:
         run: dotnet build --no-restore --configuration Release
 
       # pack and publish the nuget package
-      - name: Publish NuGet
-        uses: brandedoutcast/publish-nuget@v2.5.5
-        env: 
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+      - name: Pack nuget packages
+        run: dotnet pack Source/Geckonet.Core/Geckonet.Core.csproj --configuration Release --no-build --output nupkgs -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -p:PackageVersion=${{env.NBGV_SemVer1}}
+
+      - name: Get NuGet
+        uses: nuget/setup-nuget@v1.1.1
         with:
-          # Filepath of the project to be packaged, relative to root of repository
-          PROJECT_FILE_PATH: Source/Geckonet.Core/Geckonet.Core.csproj
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-          VERSION_STATIC: ${{env.NBGV_SemVer1}}
-          TAG_COMMIT: false
+          nuget-api-key: ${{secrets.NUGET_API_KEY}}
+          
+      - name: Release artifacts to NuGet
+        working-directory: ./nupkgs
+        run : |
+          nuget push *.nupkg -Source https://api.nuget.org/v3/index.json -SkipDuplicate
+
+      - name: Create Release
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          body: |
+            [NuGet Release v${{ steps.nbgv.outputs.SemVer2 }}](https://www.nuget.org/packages/geckonet/${{ steps.nbgv.outputs.SemVer2 }})
+          tag_name: ${{ steps.nbgv.outputs.SemVer2 }}
+          release_name: Release v${{ steps.nbgv.outputs.SemVer2 }}
+          draft: true
+          prerelease: false
